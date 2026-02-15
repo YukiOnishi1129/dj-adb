@@ -181,11 +181,11 @@ export function HorizontalScrollSection({
                   </div>
 
                   {/* 評価 */}
-                  {work.rating > 0 && (
+                  {(work.rating ?? 0) > 0 && (
                     <div className="mt-1 flex items-center gap-1">
                       <div className="flex">
                         {[1, 2, 3, 4, 5].map((star) => {
-                          const filled = star <= Math.round(work.rating);
+                          const filled = star <= Math.round(work.rating ?? 0);
                           return (
                             <svg
                               key={star}
@@ -203,7 +203,7 @@ export function HorizontalScrollSection({
                         })}
                       </div>
                       <span className="text-[9px] font-bold text-orange-500">
-                        {work.rating.toFixed(1)}
+                        {(work.rating ?? 0).toFixed(1)}
                       </span>
                     </div>
                   )}

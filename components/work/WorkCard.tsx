@@ -150,7 +150,7 @@ export const WorkCard = memo(function WorkCard({
             <div className="mt-2 flex items-center gap-1">
               <div className="flex">
                 {[1, 2, 3, 4, 5].map((star) => {
-                  const filled = star <= Math.round(work.rating);
+                  const filled = star <= Math.round(work.rating ?? 0);
                   return (
                     <svg key={star} className="h-4 w-4" viewBox="0 0 20 20">
                       <path
@@ -164,7 +164,7 @@ export const WorkCard = memo(function WorkCard({
                 })}
               </div>
               <span className="text-xs font-bold text-orange-500">
-                {work.rating.toFixed(1)}
+                {(work.rating ?? 0).toFixed(1)}
               </span>
             </div>
           )}

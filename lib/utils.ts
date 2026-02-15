@@ -15,7 +15,8 @@ export function formatPrice(price: number): string {
 /**
  * 評価を星表示用にフォーマット
  */
-export function formatRating(rating: number): string {
+export function formatRating(rating: number | null | undefined): string {
+  if (rating == null) return "0.0";
   return rating.toFixed(1);
 }
 
