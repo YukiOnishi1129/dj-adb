@@ -1,0 +1,106 @@
+// 作品データ
+export interface Work {
+  id: number;
+  fanza_content_id: string;
+  title: string;
+  price: number;
+  sale_price: number | null;
+  discount_rate: number;
+  thumbnail_url: string;
+  sample_images: string[] | null;
+  circle_id: number;
+  circle_name: string;
+  author_name: string | null;
+  rating: number;
+  page_count: number;
+  ranking: number | null;
+  is_posted: number;
+  posted_at: string | null;
+  x_post_id: string | null;
+  ai_summary: string | null;
+  ai_appeal_points: string | null;
+  genre_tags: string[] | null;
+  created_at?: string;
+  updated_at?: string;
+}
+
+// サークルデータ
+export interface Circle {
+  id: number;
+  name: string;
+  work_count: number;
+}
+
+// 特集内の作品（共通）
+export interface FeatureWork {
+  work_id: number;
+  title: string;
+  thumbnail_url: string;
+  price: number;
+  rating: number;
+  reason: string;
+  target_audience: string;
+}
+
+// サークル特集内の作品
+export interface CircleFeatureWork extends FeatureWork {
+  page_count: number;
+}
+
+// サークル特集
+export interface CircleFeature {
+  id: number;
+  circle_id: number;
+  slug: string;
+  headline: string;
+  description: string;
+  total_sales: number;
+  work_count: number;
+  avg_rating: number;
+  thumbnail_url: string | null;
+  works: CircleFeatureWork[];
+  created_at?: string;
+}
+
+// 今日のおすすめ内の作品
+export interface DailyRecommendationWork extends FeatureWork {
+  circle_name: string;
+  author_name: string | null;
+}
+
+// 今日のおすすめ
+export interface DailyRecommendation {
+  id: number;
+  target_date: string;
+  headline: string;
+  total_works_count: number;
+  works: DailyRecommendationWork[];
+  created_at?: string;
+}
+
+// セール特集内の作品
+export interface SaleFeatureWork extends FeatureWork {
+  sale_price: number;
+  discount_rate: number;
+  circle_name: string;
+}
+
+// セール特集（DB構造に準拠）
+export interface SaleFeature {
+  id: number;
+  target_date: string;
+  main_work_id: number | null;
+  main_headline: string | null;
+  main_reason: string | null;
+  sub1_work_id: number | null;
+  sub1_one_liner: string | null;
+  sub2_work_id: number | null;
+  sub2_one_liner: string | null;
+  cheapest_work_ids: number[] | null;
+  high_discount_work_ids: number[] | null;
+  high_rating_work_ids: number[] | null;
+  total_sale_count: number;
+  max_discount_rate: number;
+  created_at?: string;
+  updated_at?: string;
+}
