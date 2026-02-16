@@ -89,14 +89,14 @@ export const WorkCard = memo(function WorkCard({
           )}
 
           {/* 高評価バッジ */}
-          {work.rating >= 4.5 && (
+          {work.rating && work.rating >= 4.5 && (
             <div className="absolute bottom-2 left-2 flex items-center gap-0.5 rounded bg-amber-500/90 px-1.5 py-0.5 text-[10px] font-bold text-white">
               ★ 高評価
             </div>
           )}
 
           {/* ページ数バッジ */}
-          {work.page_count > 0 && (
+          {work.page_count && work.page_count > 0 && (
             <div className="absolute bottom-2 right-2 flex items-center gap-1 rounded bg-black/70 px-1.5 py-0.5 text-[10px] text-white">
               <BookOpen className="h-3 w-3" />
               {work.page_count}P
@@ -146,7 +146,7 @@ export const WorkCard = memo(function WorkCard({
           </div>
 
           {/* 評価 */}
-          {work.rating > 0 && (
+          {work.rating && work.rating > 0 && (
             <div className="mt-2 flex items-center gap-1">
               <div className="flex">
                 {[1, 2, 3, 4, 5].map((star) => {

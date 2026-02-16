@@ -144,7 +144,7 @@ export function HorizontalScrollSection({
                   )}
 
                   {/* ページ数バッジ */}
-                  {work.page_count > 0 && (
+                  {work.page_count && work.page_count > 0 && (
                     <div className="absolute bottom-2 right-2 flex items-center gap-1 rounded bg-black/70 px-1.5 py-0.5 text-[10px] text-white">
                       <BookOpen className="h-3 w-3" />
                       {work.page_count}P

@@ -11,14 +11,20 @@ export interface Work {
   circle_id: number;
   circle_name: string;
   author_name: string | null;
-  rating: number;
-  page_count: number;
+  rating: number | null;
+  review_count: number | null;
+  page_count: number | null;
   ranking: number | null;
   is_posted: number;
   posted_at: string | null;
   x_post_id: string | null;
+  sale_end_date: string | null;
   ai_summary: string | null;
   ai_appeal_points: string | null;
+  ai_target_audience: string | null;
+  ai_recommend_reason: string | null;
+  ai_warnings: string | null;
+  ai_review: string | null;
   genre_tags: string[] | null;
   created_at?: string;
   updated_at?: string;
@@ -51,6 +57,7 @@ export interface CircleFeatureWork extends FeatureWork {
 export interface CircleFeature {
   id: number;
   circle_id: number;
+  circle_name: string;
   slug: string;
   headline: string;
   description: string;

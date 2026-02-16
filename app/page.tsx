@@ -38,8 +38,8 @@ export default async function Home() {
 
   // 高評価作品（評価4.5以上、12件）
   const highRatedWorks = works
-    .filter((w) => w.rating >= 4.5)
-    .sort((a, b) => b.rating - a.rating)
+    .filter((w) => w.rating !== null && w.rating >= 4.5)
+    .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))
     .slice(0, 12);
 
   // 爆安コーナー（500円以下）
@@ -59,7 +59,7 @@ export default async function Home() {
 
   // サークルチップ用
   const circleChips = circleFeatures.map((f) => ({
-    name: f.headline.replace(/の作品.*$/, "").replace(/特集$/, ""),
+    name: f.circle_name,
     slug: f.slug,
   }));
 
@@ -195,7 +195,7 @@ export default async function Home() {
                     variant="circle"
                     className="cursor-pointer px-3 py-1.5 text-sm hover:opacity-80"
                   >
-                    {feature.headline.replace(/の作品.*$/, "").replace(/特集$/, "")}
+                    {feature.circle_name}
                     <span className="ml-1 opacity-70">({feature.work_count})</span>
                   </Badge>
                 </Link>

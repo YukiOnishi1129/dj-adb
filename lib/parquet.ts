@@ -40,10 +40,22 @@ function loadJson<T>(filename: string): T[] {
 
 /**
  * 作品データを取得（キャッシュ付き）
+ * circle_nameがnullの場合はcirclesデータから補完する
  */
 export async function getWorks(): Promise<Work[]> {
   if (worksCache === null) {
-    worksCache = loadJson<Work>("works.json");
+    const rawWorks = loadJson<Work>("works.json");
+    const circles = loadJson<Circle>("circles.json");
+
+    // circle_idからcircle_nameをマッピング
+    const circleMap = new Map(circles.map((c) => [c.id, c.name]));
+
+    // circle_nameを補完
+    worksCache = rawWorks.map((work) => ({
+      ...work,
+      circle_name: work.circle_name || circleMap.get(work.circle_id) || "不明",
+    }));
+
     console.log(`Loaded ${worksCache.length} works from cache`);
   }
   return worksCache;
@@ -55,6 +67,42 @@ export async function getWorks(): Promise<Work[]> {
 export async function getWorkById(id: number): Promise<Work | undefined> {
   const works = await getWorks();
   return works.find((w) => w.id === id);
+}
+
+/**
+ * サークル名で作品を取得
+ */
+export async function getWorksByCircleName(circleName: string): Promise<Work[]> {
+  const works = await getWorks();
+  const decodedName = decodeURIComponent(circleName);
+  return works.filter((w) => w.circle_name === decodedName);
+}
+
+/**
+ * 全サークル名の一覧を取得（作品があるサークルのみ）
+ */
+export async function getAllCircleNames(): Promise<string[]> {
+  const works = await getWorks();
+  const circleNames = new Set(works.map((w) => w.circle_name));
+  return [...circleNames].sort();
+}
+
+/**
+ * サークル一覧を作品数付きで取得（作品数順）
+ */
+export async function getCirclesWithWorkCount(): Promise<
+  { name: string; workCount: number }[]
+> {
+  const works = await getWorks();
+  const countMap = new Map<string, number>();
+
+  works.forEach((w) => {
+    countMap.set(w.circle_name, (countMap.get(w.circle_name) || 0) + 1);
+  });
+
+  return [...countMap.entries()]
+    .map(([name, workCount]) => ({ name, workCount }))
+    .sort((a, b) => b.workCount - a.workCount);
 }
 
 /**
