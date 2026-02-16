@@ -7,7 +7,7 @@ import { Home, Search, Flame, Star, Users } from "lucide-react";
 const navItems = [
   { href: "/", icon: Home, label: "ホーム" },
   { href: "/search", icon: Search, label: "検索" },
-  { href: "/features/sale", icon: Flame, label: "セール" },
+  { href: "/sale", icon: Flame, label: "セール" },
   { href: "/features/daily", icon: Star, label: "おすすめ" },
   { href: "/circles", icon: Users, label: "サークル" },
 ];

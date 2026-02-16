@@ -9,7 +9,7 @@ export function Footer() {
           <Link href="/works" className="hover:text-foreground">
             作品一覧
           </Link>
-          <Link href="/features/sale" className="hover:text-foreground">
+          <Link href="/sale" className="hover:text-foreground">
             セール
           </Link>
           <Link href="/features/daily" className="hover:text-foreground">

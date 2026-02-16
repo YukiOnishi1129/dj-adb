@@ -286,6 +286,20 @@ export async function getRecommendedWorks(
 }
 
 /**
+ * セール中の作品を取得
+ */
+export async function getSaleWorks(limit: number = 200): Promise<Work[]> {
+  const works = await getWorks();
+
+  // セール中の作品をフィルタ（sale_priceがあり、priceより安い）
+  const saleWorks = works
+    .filter((w) => w.sale_price !== null && w.sale_price < w.price && w.discount_rate > 0)
+    .sort((a, b) => (b.discount_rate ?? 0) - (a.discount_rate ?? 0));
+
+  return saleWorks.slice(0, limit);
+}
+
+/**
  * キャッシュをクリアする（テスト用）
  */
 export function clearCache(): void {

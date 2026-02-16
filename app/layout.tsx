@@ -22,6 +22,18 @@ export const metadata: Metadata = {
     "同人コミック・CGの最新ランキング、セール情報、おすすめ作品を毎日更新。FANZAの人気作品をチェック！",
   keywords: ["同人", "コミック", "CG", "FANZA", "セール", "ランキング"],
   robots: "index, follow",
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/favicon-256.png",
+    other: [
+      {
+        rel: "icon",
+        type: "image/png",
+        sizes: "256x256",
+        url: "/favicon-256.png",
+      },
+    ],
+  },
   openGraph: {
     type: "website",
     locale: "ja_JP",
