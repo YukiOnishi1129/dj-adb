@@ -4,23 +4,24 @@ import { HorizontalScrollSection } from "@/components/horizontal-scroll-section"
 import { HeroSaleBanner } from "@/components/hero-sale-banner";
 import { FeaturedBanners } from "@/components/featured-banners";
 import { TrendingChips } from "@/components/trending-chips";
-import { CircleCarousel, CircleGridCarousel } from "@/components/circle-carousel";
 import { Badge } from "@/components/ui/badge";
 import {
   getWorks,
   getLatestDailyRecommendation,
   getLatestSaleFeature,
+  getCirclesWithWorkCount,
   getCircleFeatures,
 } from "@/lib/parquet";
 
 export const dynamic = "force-static";
 
 export default async function Home() {
-  const [works, dailyRecommendation, saleFeature, circleFeatures] =
+  const [works, dailyRecommendation, saleFeature, circlesWithCount, circleFeatures] =
     await Promise.all([
       getWorks(),
       getLatestDailyRecommendation(),
       getLatestSaleFeature(),
+      getCirclesWithWorkCount(),
       getCircleFeatures(),
     ]);
 
@@ -54,14 +55,8 @@ export default async function Home() {
   // 新着作品（最新12件）
   const latestWorks = works.slice(0, 12);
 
-  // サークル特集
-  const topCircles = circleFeatures.slice(0, 8);
-
-  // サークルチップ用
-  const circleChips = circleFeatures.map((f) => ({
-    name: f.circle_name,
-    slug: f.slug,
-  }));
+  // 人気サークル（作品数順、上位12件）
+  const topCircles = circlesWithCount.slice(0, 12);
 
   // 人気タグ（genre_tagsから収集）
   const tagCounts = new Map<string, number>();
@@ -88,40 +83,18 @@ export default async function Home() {
         {/* セールバナー（コンパクト） */}
         <HeroSaleBanner maxDiscount={maxDiscount} saleCount={saleWorks.length} />
 
-        {/* 今日のおすすめ & セール特集 */}
+        {/* 今日のおすすめ & セール特集 & サークル特集カルーセル */}
         <FeaturedBanners
           saleThumbnail={saleThumbnail}
           saleMaxDiscountRate={saleFeature?.max_discount_rate}
           saleTargetDate={saleFeature?.target_date}
           recommendationThumbnail={recommendationThumbnail}
           recommendationHeadline={dailyRecommendation?.headline}
+          circleFeatures={circleFeatures}
         />
 
         {/* トレンドチップ（コンパクト） */}
-        <TrendingChips circles={circleChips} tags={popularTags} />
-
-        {/* サークル特集カルーセル */}
-        {circleFeatures.length > 0 && (
-          <section className="mb-6">
-            <div className="mb-3 flex items-center justify-between">
-              <h2 className="text-lg font-bold text-foreground">🎨 サークル特集</h2>
-              <Link
-                href="/features/circle"
-                className="text-sm text-pink-500 hover:text-pink-400"
-              >
-                もっと見る
-              </Link>
-            </div>
-            {/* モバイル: 1枚ずつカルーセル */}
-            <div className="md:hidden">
-              <CircleCarousel features={circleFeatures} autoPlay interval={5000} />
-            </div>
-            {/* PC: 5カラムグリッドカルーセル */}
-            <div className="hidden md:block">
-              <CircleGridCarousel features={circleFeatures} autoPlay interval={5000} />
-            </div>
-          </section>
-        )}
+        <TrendingChips circles={topCircles} tags={popularTags} />
 
         {/* 人気ランキング（横スクロール＋金銀銅バッジ） */}
         {rankedWorks.length > 0 && (
@@ -179,24 +152,24 @@ export default async function Home() {
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-xl font-bold text-foreground">人気サークル</h2>
               <Link
-                href="/features/circle"
+                href="/circles"
                 className="flex items-center gap-1 text-sm text-accent transition-colors hover:text-accent/80"
               >
                 もっと見る
               </Link>
             </div>
             <div className="flex flex-wrap gap-2">
-              {topCircles.map((feature) => (
+              {topCircles.map((circle) => (
                 <Link
-                  key={feature.id}
-                  href={`/features/circle/${feature.slug}`}
+                  key={circle.name}
+                  href={`/circles/${encodeURIComponent(circle.name)}`}
                 >
                   <Badge
                     variant="circle"
                     className="cursor-pointer px-3 py-1.5 text-sm hover:opacity-80"
                   >
-                    {feature.circle_name}
-                    <span className="ml-1 opacity-70">({feature.work_count})</span>
+                    {circle.name}
+                    <span className="ml-1 opacity-70">({circle.workCount})</span>
                   </Badge>
                 </Link>
               ))}
@@ -209,10 +182,16 @@ export default async function Home() {
           <section className="mb-12">
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-xl font-bold text-foreground">人気タグ</h2>
+              <Link
+                href="/tags"
+                className="flex items-center gap-1 text-sm text-accent transition-colors hover:text-accent/80"
+              >
+                もっと見る
+              </Link>
             </div>
             <div className="flex flex-wrap gap-2">
               {popularTags.map((tag) => (
-                <Link key={tag} href={`/search?q=${encodeURIComponent(tag)}`}>
+                <Link key={tag} href={`/tags/${encodeURIComponent(tag)}`}>
                   <Badge
                     variant="tag"
                     className="cursor-pointer px-3 py-1.5 text-sm hover:opacity-80"

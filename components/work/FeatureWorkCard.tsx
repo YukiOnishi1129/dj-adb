@@ -1,21 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Star } from "lucide-react";
-import { cn, formatPrice, formatRating, formatDiscount } from "@/lib/utils";
-import type { FeatureWork, SaleFeatureWork } from "@/types";
+import { cn, formatPrice, formatRating } from "@/lib/utils";
+import type { FeatureWork } from "@/types";
 
 interface FeatureWorkCardProps {
-  work: FeatureWork | SaleFeatureWork;
+  work: FeatureWork;
   className?: string;
 }
 
-function isSaleWork(work: FeatureWork | SaleFeatureWork): work is SaleFeatureWork {
-  return "sale_price" in work && "discount_rate" in work;
-}
-
 export function FeatureWorkCard({ work, className }: FeatureWorkCardProps) {
-  const isOnSale = isSaleWork(work);
-
   return (
     <div
       className={cn(
@@ -35,12 +29,6 @@ export function FeatureWorkCard({ work, className }: FeatureWorkCardProps) {
               sizes="96px"
             />
           )}
-          {/* Sale badge */}
-          {isOnSale && (
-            <div className="absolute top-1 right-1 bg-red-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">
-              {formatDiscount(work.discount_rate)}
-            </div>
-          )}
         </div>
 
         {/* Info */}
@@ -53,27 +41,11 @@ export function FeatureWorkCard({ work, className }: FeatureWorkCardProps) {
             {work.title}
           </Link>
 
-          {/* Circle name (if available) */}
-          {"circle_name" in work && (
-            <p className="text-xs text-zinc-400 truncate">{work.circle_name}</p>
-          )}
-
           {/* Price and rating */}
           <div className="flex items-center gap-3">
-            {isOnSale ? (
-              <div className="flex items-center gap-1">
-                <span className="text-sm font-bold text-red-400">
-                  {formatPrice(work.sale_price)}
-                </span>
-                <span className="text-xs text-zinc-500 line-through">
-                  {formatPrice(work.price)}
-                </span>
-              </div>
-            ) : (
-              <span className="text-sm font-bold text-zinc-100">
-                {formatPrice(work.price)}
-              </span>
-            )}
+            <span className="text-sm font-bold text-zinc-100">
+              {formatPrice(work.price)}
+            </span>
 
             <div className="flex items-center gap-1 text-xs text-zinc-400">
               <Star className="h-3 w-3 text-yellow-400 fill-yellow-400" />

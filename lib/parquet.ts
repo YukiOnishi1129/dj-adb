@@ -70,6 +70,18 @@ export async function getWorkById(id: number): Promise<Work | undefined> {
 }
 
 /**
+ * 複数のIDで作品を取得（順序を保持）
+ */
+export async function getWorksByIds(ids: number[]): Promise<Work[]> {
+  if (!ids || ids.length === 0) return [];
+  const works = await getWorks();
+  const workMap = new Map(works.map((w) => [w.id, w]));
+  return ids
+    .map((id) => workMap.get(id))
+    .filter((w): w is Work => w !== undefined);
+}
+
+/**
  * サークル名で作品を取得
  */
 export async function getWorksByCircleName(circleName: string): Promise<Work[]> {

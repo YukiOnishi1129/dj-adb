@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 
 interface TrendingChipsProps {
-  circles: { name: string; slug: string }[];
+  circles: { name: string; workCount: number }[];
   tags: string[];
 }
 
@@ -20,8 +20,8 @@ export function TrendingChips({ circles, tags }: TrendingChipsProps) {
           <div className="flex gap-1.5">
             {circles.slice(0, 6).map((circle) => (
               <Link
-                key={circle.slug}
-                href={`/features/circle/${circle.slug}`}
+                key={circle.name}
+                href={`/circles/${encodeURIComponent(circle.name)}`}
               >
                 <Badge
                   variant="circle"
@@ -31,7 +31,7 @@ export function TrendingChips({ circles, tags }: TrendingChipsProps) {
                 </Badge>
               </Link>
             ))}
-            <Link href="/features/circle">
+            <Link href="/circles">
               <Badge
                 variant="outline"
                 className="cursor-pointer whitespace-nowrap px-2 py-0.5 text-[10px] transition-opacity hover:opacity-80"
@@ -51,7 +51,7 @@ export function TrendingChips({ circles, tags }: TrendingChipsProps) {
           </span>
           <div className="flex gap-1.5">
             {tags.slice(0, 8).map((tag) => (
-              <Link key={tag} href={`/search?q=${encodeURIComponent(tag)}`}>
+              <Link key={tag} href={`/tags/${encodeURIComponent(tag)}`}>
                 <Badge
                   variant="tag"
                   className="cursor-pointer whitespace-nowrap px-2 py-0.5 text-[10px] transition-opacity hover:opacity-80"

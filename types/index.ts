@@ -85,29 +85,33 @@ export interface DailyRecommendation {
   created_at?: string;
 }
 
-// セール特集内の作品
-export interface SaleFeatureWork extends FeatureWork {
-  sale_price: number;
-  discount_rate: number;
-  circle_name: string;
-}
-
-// セール特集（DB構造に準拠）
+// セール特集（2D-ADB形式）
 export interface SaleFeature {
   id: number;
   target_date: string;
+
+  // メイン作品
   main_work_id: number | null;
   main_headline: string | null;
   main_reason: string | null;
+
+  // サブ作品1
   sub1_work_id: number | null;
   sub1_one_liner: string | null;
+
+  // サブ作品2
   sub2_work_id: number | null;
   sub2_one_liner: string | null;
+
+  // 横スクロール用リスト
   cheapest_work_ids: number[] | null;
   high_discount_work_ids: number[] | null;
   high_rating_work_ids: number[] | null;
+
+  // 統計
   total_sale_count: number;
   max_discount_rate: number;
+
   created_at?: string;
   updated_at?: string;
 }
