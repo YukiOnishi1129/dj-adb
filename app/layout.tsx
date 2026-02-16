@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 import { MobileNav } from "@/components/mobile-nav";
 import "./globals.css";
+
+const GA_MEASUREMENT_ID = "G-CW6YS7PYBW";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -52,6 +55,19 @@ export default function RootLayout({
   return (
     <html lang="ja" className="dark">
       <head>
+        {/* Google Analytics */}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_MEASUREMENT_ID}');
+          `}
+        </Script>
         {/* テーマ初期化（FOUC防止） */}
         <script
           dangerouslySetInnerHTML={{

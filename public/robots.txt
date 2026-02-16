@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /privacy
+
+Sitemap: https://dj-adb.com/sitemap.xml

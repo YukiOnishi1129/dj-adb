@@ -6,7 +6,7 @@
     "dev": "next dev",
     "generate-index": "node scripts/generate-search-index.mjs",
     "prebuild": "node scripts/prebuild-data.mjs",
-    "build": "node scripts/prebuild-data.mjs && node scripts/generate-search-index.mjs && next build",
+    "build": "node scripts/prebuild-data.mjs && node scripts/generate-search-index.mjs && node scripts/generate-sitemap.mjs && next build",
     "serve": "npx serve@latest out -p 3000",
     "start": "next start",
     "lint": "biome lint --log-level=warn .",
