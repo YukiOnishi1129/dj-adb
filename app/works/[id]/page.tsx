@@ -544,51 +544,66 @@ export default async function WorkDetailPage({ params }: Props) {
           )}
 
           {/* 販売情報テーブル（2D-ADB風） */}
-          <Card className="overflow-hidden">
+          <Card>
             <CardContent className="p-0">
-              {/* ヘッダー */}
-              <div className="grid grid-cols-3 border-b border-border bg-muted/30 text-xs text-muted-foreground">
-                <div className="px-4 py-2.5">販売</div>
-                <div className="px-4 py-2.5">価格</div>
-                <div className="px-4 py-2.5 text-center">無料版あり</div>
-              </div>
-              {/* FANZA行 */}
-              <div className="grid grid-cols-3 items-center">
-                <div className="px-4 py-4 text-sm font-medium text-foreground">
-                  FANZA
-                </div>
-                <div className="px-4 py-4">
-                  <div className="flex items-center gap-2">
-                    {isOnSale && (
-                      <span className="text-xs text-muted-foreground line-through whitespace-nowrap">
-                        {formatPrice(work.price)}
-                      </span>
-                    )}
-                    <span className={`text-lg font-bold whitespace-nowrap ${isOnSale ? "text-red-500" : "text-foreground"}`}>
-                      {formatPrice(displayPrice)}
-                    </span>
-                    {isOnSale && work.discount_rate > 0 && (
-                      <Badge className="bg-orange-500 hover:bg-orange-500 text-white text-[10px] px-1.5 py-0.5 whitespace-nowrap">
-                        {work.discount_rate}%OFF
-                      </Badge>
-                    )}
-                  </div>
-                </div>
-                <div className="px-4 py-4 text-center">
-                  <a
-                    href={fanzaUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-orange-500 to-orange-600 px-4 py-2 text-sm font-bold text-white transition-all hover:from-orange-600 hover:to-orange-700 hover:scale-105 whitespace-nowrap"
-                  >
-                    <svg className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                    </svg>
-                    試し読み
-                  </a>
-                </div>
-              </div>
+              <table className="w-full">
+                <thead className="bg-secondary">
+                  <tr>
+                    <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-medium text-muted-foreground">
+                      <span className="hidden sm:inline">プラットフォーム</span>
+                      <span className="sm:hidden">販売</span>
+                    </th>
+                    <th className="flex px-2 sm:px-4 py-3 text-right text-xs sm:text-sm font-medium text-muted-foreground justify-center">
+                      価格
+                    </th>
+                    <th className="px-2 sm:px-4 py-3 text-center text-xs sm:text-sm font-medium text-muted-foreground">
+                      無料版あり
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-t border-border">
+                    <td className="px-2 sm:px-4 py-3">
+                      <span className="font-medium text-foreground">FANZA</span>
+                    </td>
+                    <td className="px-2 sm:px-4 py-3 text-right">
+                      <div className="flex items-end justify-center gap-4">
+                        <div>
+                          {isOnSale && (
+                            <p className="text-[10px] text-muted-foreground line-through">
+                              {formatPrice(work.price)}
+                            </p>
+                          )}
+                          <p className={`text-lg font-bold sm:text-xl ${isOnSale ? "text-red-500" : "text-foreground"}`}>
+                            {formatPrice(displayPrice)}
+                          </p>
+                        </div>
+                        <div className="flex items-end gap-1.5 justify-center mb-1">
+                          {isOnSale && work.discount_rate > 0 && (
+                            <Badge variant="sale" className="text-[9px] px-1">
+                              {work.discount_rate}%OFF
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-2 sm:px-4 py-3 text-center">
+                      <a
+                        href={fanzaUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`inline-flex items-center gap-1.5 rounded-md px-3 py-2 text-sm font-bold text-white transition-all hover:scale-105 ${isOnSale ? "bg-orange-500 hover:bg-orange-600" : "bg-emerald-600 hover:bg-emerald-700"}`}
+                      >
+                        <svg className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        試し読み
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </CardContent>
           </Card>
 
@@ -740,17 +755,9 @@ export default async function WorkDetailPage({ params }: Props) {
           {/* 同じサークルの他の作品 */}
           {circleWorks.length > 0 && (
             <section className="mt-8 space-y-4">
-              <div className="flex items-center justify-between">
-                <h2 className="text-lg font-bold text-foreground">
-                  🎨 {work.circle_name}の他の人気作品
-                </h2>
-                <Link
-                  href={`/circles/${encodeURIComponent(work.circle_name)}`}
-                  className="text-sm text-pink-500 hover:underline"
-                >
-                  もっと見る →
-                </Link>
-              </div>
+              <h2 className="text-lg font-bold text-foreground">
+                🎨 {work.circle_name}の他の人気作品
+              </h2>
               <WorkGrid works={circleWorks} columns={2} />
             </section>
           )}
