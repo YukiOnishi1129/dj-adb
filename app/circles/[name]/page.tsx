@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Header, Footer } from "@/components/layout";
 import { WorkGrid } from "@/components/work";
+import { Card, CardContent } from "@/components/ui/card";
 import { getWorksByCircleName, getAllCircleNames } from "@/lib/parquet";
 
 interface Props {
@@ -37,7 +38,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export async function generateStaticParams() {
   const names = await getAllCircleNames();
   return names.map((name) => ({
-    name: encodeURIComponent(name),
+    name: name,
   }));
 }
 
@@ -74,15 +75,17 @@ export default async function CircleDetailPage({ params }: Props) {
           <span className="text-foreground">{decodedName}</span>
         </nav>
 
-        {/* ヘッダー */}
-        <div className="mb-8">
-          <h1 className="mb-2 text-2xl font-bold text-foreground">
-            {decodedName}
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            {works.length}作品
-          </p>
-        </div>
+        {/* ヘッダーカード */}
+        <Card className="mb-6 border-border">
+          <CardContent className="p-5">
+            <h1 className="text-xl font-bold text-foreground">
+              {decodedName}
+            </h1>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {works.length}作品
+            </p>
+          </CardContent>
+        </Card>
 
         {/* 作品一覧 */}
         <h2 className="mb-4 text-lg font-bold text-foreground">作品一覧</h2>

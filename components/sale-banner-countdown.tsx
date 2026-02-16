@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 
 interface SaleBannerCountdownProps {
   endDate: string;
+  /** コンパクト表示（モバイルバナー用） */
+  compact?: boolean;
 }
 
 interface TimeLeft {
@@ -14,7 +16,7 @@ interface TimeLeft {
   expired: boolean;
 }
 
-export function SaleBannerCountdown({ endDate }: SaleBannerCountdownProps) {
+export function SaleBannerCountdown({ endDate, compact = false }: SaleBannerCountdownProps) {
   const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(null);
 
   useEffect(() => {
@@ -51,21 +53,41 @@ export function SaleBannerCountdown({ endDate }: SaleBannerCountdownProps) {
     return <span className="font-bold">終了</span>;
   }
 
-  if (timeLeft.days > 0) {
+  // コンパクト表示（スマホバナー用）
+  if (compact) {
+    if (timeLeft.days > 0) {
+      return (
+        <span className="font-bold tabular-nums">
+          {timeLeft.days}日{timeLeft.hours}時間
+        </span>
+      );
+    }
     return (
-      <span className="font-mono font-bold tabular-nums">
-        {timeLeft.days}日 {String(timeLeft.hours).padStart(2, "0")}:
-        {String(timeLeft.minutes).padStart(2, "0")}:
-        {String(timeLeft.seconds).padStart(2, "0")}
+      <span className="font-bold tabular-nums">
+        {timeLeft.hours}時間{timeLeft.minutes}分
       </span>
     );
   }
 
+  // 2D-ADB風の表示（白背景用に黒/グレー文字）
   return (
-    <span className="font-mono font-bold tabular-nums">
-      {String(timeLeft.hours).padStart(2, "0")}:
-      {String(timeLeft.minutes).padStart(2, "0")}:
-      {String(timeLeft.seconds).padStart(2, "0")}
-    </span>
+    <div className="flex items-baseline gap-1">
+      {timeLeft.days > 0 && (
+        <>
+          <span className="text-3xl font-bold tabular-nums text-orange-500">
+            {timeLeft.days}
+          </span>
+          <span className="text-sm text-gray-500 mr-2">日</span>
+        </>
+      )}
+      <span className="text-3xl font-bold tabular-nums text-orange-500">
+        {timeLeft.hours}
+      </span>
+      <span className="text-sm text-gray-500 mr-2">時間</span>
+      <span className="text-3xl font-bold tabular-nums text-orange-500">
+        {timeLeft.minutes}
+      </span>
+      <span className="text-sm text-gray-500">分</span>
+    </div>
   );
 }

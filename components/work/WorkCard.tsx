@@ -17,6 +17,27 @@ function formatPrice(price: number): string {
   return `¥${price.toLocaleString()}`;
 }
 
+function getSaleRemainingText(saleEndDate: string | null): string | null {
+  if (!saleEndDate) return null;
+
+  const now = new Date();
+  const end = new Date(saleEndDate);
+  const diffMs = end.getTime() - now.getTime();
+
+  if (diffMs <= 0) return null;
+
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  const diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+  if (diffDays > 0) {
+    return `残り${diffDays}日`;
+  } else if (diffHours > 0) {
+    return `残り${diffHours}時間`;
+  } else {
+    return "まもなく終了";
+  }
+}
+
 function getRankBadgeStyles(rank: number) {
   if (rank === 1) {
     return {
@@ -53,8 +74,8 @@ export const WorkCard = memo(function WorkCard({
   return (
     <Link href={`/works/${work.id}`}>
       <Card className="group overflow-hidden transition-all duration-200 hover:shadow-md hover:scale-[1.02]">
-        {/* サムネイル - 縦長3:4 */}
-        <div className="relative aspect-[3/4] overflow-hidden bg-muted">
+        {/* サムネイル */}
+        <div className="relative overflow-hidden bg-muted">
           <img
             src={
               work.thumbnail_url ||
@@ -66,7 +87,7 @@ export const WorkCard = memo(function WorkCard({
               e.currentTarget.src =
                 "https://placehold.co/300x400/f4f4f5/71717a?text=No+Image";
             }}
-            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+            className="w-full h-auto transition-transform duration-300 group-hover:scale-105"
           />
 
           {/* ランキングバッジ */}
@@ -130,19 +151,22 @@ export const WorkCard = memo(function WorkCard({
           )}
 
           {/* 価格エリア */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-baseline gap-1.5">
-              {isOnSale && (
-                <span className="text-xs text-muted-foreground line-through">
-                  {formatPrice(work.price)}
-                </span>
-              )}
-              <span
-                className={`text-base font-bold ${isOnSale ? "text-red-500" : "text-foreground"}`}
-              >
-                {formatPrice(isOnSale ? work.sale_price! : work.price)}
+          <div className="flex items-baseline gap-1.5 flex-wrap">
+            {isOnSale && (
+              <span className="text-xs text-muted-foreground line-through">
+                {formatPrice(work.price)}
               </span>
-            </div>
+            )}
+            <span
+              className={`text-base font-bold ${isOnSale ? "text-red-500" : "text-foreground"}`}
+            >
+              {formatPrice(isOnSale ? work.sale_price! : work.price)}
+            </span>
+            {isOnSale && work.sale_end_date && (
+              <span className="text-[10px] text-orange-500 font-medium">
+                ({getSaleRemainingText(work.sale_end_date)})
+              </span>
+            )}
           </div>
 
           {/* 評価 */}

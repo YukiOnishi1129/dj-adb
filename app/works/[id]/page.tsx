@@ -6,7 +6,16 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SaleBannerCountdown } from "@/components/sale-banner-countdown";
 import { FixedPurchaseCta } from "@/components/fixed-purchase-cta";
-import { getWorks, getWorkById } from "@/lib/parquet";
+import { WorkGrid } from "@/components/work";
+import {
+  getWorks,
+  getWorkById,
+  getRelatedWorksByCircle,
+  getRelatedWorksByGenre,
+  getCircleFeatureByName,
+  getCircleFeatures,
+  getRecommendedWorks,
+} from "@/lib/parquet";
 import {
   formatPrice,
   formatRating,
@@ -63,6 +72,15 @@ export default async function WorkDetailPage({ params }: Props) {
   const fanzaUrl = getFanzaUrl(work.fanza_content_id);
   const displayPrice = isOnSale ? work.sale_price! : work.price;
 
+  // 関連データを取得
+  const [circleWorks, relatedWorks, circleFeature, allCircleFeatures, recommendedWorks] = await Promise.all([
+    getRelatedWorksByCircle(work.circle_name, work.id, 4),
+    getRelatedWorksByGenre(work.genre_tags || [], work.id, 4),
+    getCircleFeatureByName(work.circle_name),
+    getCircleFeatures(),
+    getRecommendedWorks(work.id, 4),
+  ]);
+
   return (
     <div className="min-h-screen bg-background pb-32 md:pb-0">
       <Header />
@@ -73,7 +91,7 @@ export default async function WorkDetailPage({ params }: Props) {
           <div className="flex items-center justify-center gap-2 text-xs">
             <span className="font-bold">{work.discount_rate}%OFF</span>
             <span>終了まで</span>
-            <SaleBannerCountdown endDate={work.sale_end_date} />
+            <SaleBannerCountdown endDate={work.sale_end_date} compact />
           </div>
         </div>
       )}
@@ -434,6 +452,28 @@ export default async function WorkDetailPage({ params }: Props) {
                   <span className="font-medium text-foreground">{work.author_name}</span>
                 </div>
               )}
+              {work.genre_tags && work.genre_tags.length > 0 && (
+                <div className="flex items-start justify-between pt-1">
+                  <div className="flex items-center gap-2 text-muted-foreground shrink-0">
+                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                    </svg>
+                    <span>ジャンル</span>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5 justify-end ml-4">
+                    {work.genre_tags.map((tag) => (
+                      <Link key={tag} href={`/search?q=${encodeURIComponent(tag)}`}>
+                        <Badge
+                          variant="tag"
+                          className="text-xs cursor-pointer hover:opacity-80"
+                        >
+                          {tag}
+                        </Badge>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
 
@@ -455,9 +495,9 @@ export default async function WorkDetailPage({ params }: Props) {
                       {formatRating(work.rating)}
                     </span>
                   </div>
-                  {work.review_count && (
+                  {work.review_count !== null && work.review_count !== undefined && (
                     <span className="text-sm text-muted-foreground">
-                      ({work.review_count}件)
+                      ({work.review_count}件のレビュー)
                     </span>
                   )}
                 </div>
@@ -465,13 +505,13 @@ export default async function WorkDetailPage({ params }: Props) {
             </Card>
           )}
 
-          {/* セール終了カウントダウン（2D-ADB風） */}
+          {/* セール終了カウントダウン（2D-ADB風・白背景） */}
           {isOnSale && work.sale_end_date && (
-            <Card className="border-orange-500/50 bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-950/30 dark:to-red-950/30">
+            <Card className="overflow-hidden border border-gray-200 bg-white dark:bg-gray-100">
               <CardContent className="p-4">
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center justify-center w-12 h-12 rounded-full bg-orange-100 dark:bg-orange-900/50">
-                    <svg className="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center justify-center w-10 h-10 rounded-full border-2 border-orange-500">
+                    <svg className="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
@@ -480,11 +520,9 @@ export default async function WorkDetailPage({ params }: Props) {
                       <Badge variant="sale" className="text-xs px-2 py-0.5">
                         {work.discount_rate}%OFF
                       </Badge>
-                      <span className="text-sm text-muted-foreground">セール終了まで</span>
+                      <span className="text-sm text-gray-600">セール終了まで</span>
                     </div>
-                    <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">
-                      <SaleBannerCountdown endDate={work.sale_end_date} />
-                    </div>
+                    <SaleBannerCountdown endDate={work.sale_end_date} />
                   </div>
                 </div>
               </CardContent>
@@ -504,6 +542,55 @@ export default async function WorkDetailPage({ params }: Props) {
               </CardContent>
             </Card>
           )}
+
+          {/* 販売情報テーブル（2D-ADB風） */}
+          <Card className="overflow-hidden">
+            <CardContent className="p-0">
+              {/* ヘッダー */}
+              <div className="grid grid-cols-3 border-b border-border bg-muted/30 text-xs text-muted-foreground">
+                <div className="px-4 py-2.5">販売</div>
+                <div className="px-4 py-2.5">価格</div>
+                <div className="px-4 py-2.5 text-center">無料版あり</div>
+              </div>
+              {/* FANZA行 */}
+              <div className="grid grid-cols-3 items-center">
+                <div className="px-4 py-4 text-sm font-medium text-foreground">
+                  FANZA
+                </div>
+                <div className="px-4 py-4">
+                  <div className="flex items-center gap-2">
+                    {isOnSale && (
+                      <span className="text-xs text-muted-foreground line-through whitespace-nowrap">
+                        {formatPrice(work.price)}
+                      </span>
+                    )}
+                    <span className={`text-lg font-bold whitespace-nowrap ${isOnSale ? "text-red-500" : "text-foreground"}`}>
+                      {formatPrice(displayPrice)}
+                    </span>
+                    {isOnSale && work.discount_rate > 0 && (
+                      <Badge className="bg-orange-500 hover:bg-orange-500 text-white text-[10px] px-1.5 py-0.5 whitespace-nowrap">
+                        {work.discount_rate}%OFF
+                      </Badge>
+                    )}
+                  </div>
+                </div>
+                <div className="px-4 py-4 text-center">
+                  <a
+                    href={fanzaUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-orange-500 to-orange-600 px-4 py-2 text-sm font-bold text-white transition-all hover:from-orange-600 hover:to-orange-700 hover:scale-105 whitespace-nowrap"
+                  >
+                    <svg className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                    試し読み
+                  </a>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
           {/* 購入ボタン（大きめ） */}
           <Card
@@ -607,6 +694,116 @@ export default async function WorkDetailPage({ params }: Props) {
               </p>
             </CardContent>
           </Card>
+
+          {/* 発売日 */}
+          {work.created_at && (
+            <div className="text-sm text-muted-foreground">
+              発売日: {new Date(work.created_at).toLocaleDateString("ja-JP")}
+            </div>
+          )}
+
+          {/* サークル特集ページへのリンク */}
+          {circleFeature && (
+            <div className="space-y-3">
+              <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
+                <span className="text-pink-500">🎨</span>
+                {work.circle_name}の特集ページ
+              </h2>
+              <Link href={`/features/circle/${encodeURIComponent(circleFeature.slug)}`}>
+                <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+                  <div className="relative">
+                    {circleFeature.thumbnail_url && (
+                      <img
+                        src={circleFeature.thumbnail_url}
+                        alt={circleFeature.circle_name}
+                        className="w-full h-40 object-cover"
+                      />
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+                    <div className="absolute bottom-0 left-0 right-0 p-4">
+                      <Badge variant="sale" className="mb-2">
+                        {circleFeature.circle_name}特集
+                      </Badge>
+                      <h3 className="text-white font-bold text-lg">
+                        {circleFeature.headline}
+                      </h3>
+                      <p className="text-white/80 text-sm mt-1">
+                        全{circleFeature.work_count}作品から厳選
+                      </p>
+                    </div>
+                  </div>
+                </Card>
+              </Link>
+            </div>
+          )}
+
+          {/* 同じサークルの他の作品 */}
+          {circleWorks.length > 0 && (
+            <section className="mt-8 space-y-4">
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg font-bold text-foreground">
+                  🎨 {work.circle_name}の他の人気作品
+                </h2>
+                <Link
+                  href={`/circles/${encodeURIComponent(work.circle_name)}`}
+                  className="text-sm text-pink-500 hover:underline"
+                >
+                  もっと見る →
+                </Link>
+              </div>
+              <WorkGrid works={circleWorks} columns={2} />
+            </section>
+          )}
+
+          {/* この作品が好きな人はこれも（タグベース） */}
+          {relatedWorks.length > 0 && (
+            <section className="mt-8 space-y-4">
+              <h2 className="text-lg font-bold text-foreground">
+                🛒 この作品が好きな人はこれも
+              </h2>
+              <WorkGrid works={relatedWorks} columns={2} />
+            </section>
+          )}
+
+          {/* こちらもおすすめ */}
+          {recommendedWorks.length > 0 && (
+            <section className="mt-10 space-y-4">
+              <h2 className="text-lg font-bold text-foreground">
+                こちらもおすすめ
+              </h2>
+              <WorkGrid works={recommendedWorks} columns={2} />
+            </section>
+          )}
+
+          {/* 人気サークル特集 */}
+          {allCircleFeatures.length > 0 && (
+            <section className="mt-10 space-y-3">
+              <h2 className="text-lg font-bold text-foreground">🎨 人気サークル特集</h2>
+              <div className="grid gap-3 md:grid-cols-3">
+                {allCircleFeatures.slice(0, 6).map((feature) => (
+                  <Link key={feature.slug} href={`/features/circle/${encodeURIComponent(feature.slug)}`}>
+                    <div className="flex items-center gap-3 p-3 rounded-lg border border-pink-500/30 hover:border-pink-500/50 transition-all bg-card">
+                      {feature.thumbnail_url && (
+                        <div className="relative w-16 h-16 shrink-0 rounded-lg overflow-hidden">
+                          <img
+                            src={feature.thumbnail_url}
+                            alt=""
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <span className="text-sm font-bold text-pink-500">{feature.circle_name}</span>
+                        <p className="text-xs text-muted-foreground line-clamp-1">
+                          {feature.headline || `${feature.circle_name}のおすすめ作品`}
+                        </p>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
         </div>
       </main>
 

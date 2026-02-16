@@ -9,7 +9,7 @@ const navItems = [
   { href: "/search", icon: Search, label: "検索" },
   { href: "/features/sale", icon: Flame, label: "セール" },
   { href: "/features/daily", icon: Star, label: "おすすめ" },
-  { href: "/features/circle", icon: Users, label: "サークル" },
+  { href: "/circles", icon: Users, label: "サークル" },
 ];
 
 export function MobileNav() {

@@ -199,6 +199,81 @@ export async function getLatestSaleFeature(): Promise<SaleFeature | undefined> {
 }
 
 /**
+ * 同じサークルの他の作品を取得（現在の作品を除く）
+ */
+export async function getRelatedWorksByCircle(
+  circleName: string,
+  excludeWorkId: number,
+  limit: number = 6
+): Promise<Work[]> {
+  const works = await getWorks();
+  return works
+    .filter((w) => w.circle_name === circleName && w.id !== excludeWorkId)
+    .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))
+    .slice(0, limit);
+}
+
+/**
+ * 同じジャンルのおすすめ作品を取得（現在の作品を除く）
+ */
+export async function getRelatedWorksByGenre(
+  genreTags: string[],
+  excludeWorkId: number,
+  limit: number = 6
+): Promise<Work[]> {
+  if (!genreTags || genreTags.length === 0) return [];
+
+  const works = await getWorks();
+  const tagSet = new Set(genreTags);
+
+  // ジャンルタグの一致数でスコアリング
+  const scoredWorks = works
+    .filter((w) => w.id !== excludeWorkId && w.genre_tags && w.genre_tags.length > 0)
+    .map((w) => {
+      const matchCount = w.genre_tags!.filter((tag) => tagSet.has(tag)).length;
+      return { work: w, score: matchCount };
+    })
+    .filter((item) => item.score > 0)
+    .sort((a, b) => {
+      // まずスコア、次に評価でソート
+      if (b.score !== a.score) return b.score - a.score;
+      return (b.work.rating ?? 0) - (a.work.rating ?? 0);
+    });
+
+  return scoredWorks.slice(0, limit).map((item) => item.work);
+}
+
+/**
+ * サークル特集を名前で取得
+ */
+export async function getCircleFeatureByName(
+  circleName: string
+): Promise<CircleFeature | undefined> {
+  const features = await getCircleFeatures();
+  return features.find((f) => f.circle_name === circleName);
+}
+
+/**
+ * こちらもおすすめ（評価の高い作品からランダムに取得）
+ */
+export async function getRecommendedWorks(
+  excludeWorkId: number,
+  limit: number = 4
+): Promise<Work[]> {
+  const works = await getWorks();
+
+  // 評価4.0以上の作品を候補にする
+  const candidates = works
+    .filter((w) => w.id !== excludeWorkId && (w.rating ?? 0) >= 4.0)
+    .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
+
+  // 上位20件からランダムに選ぶ
+  const top = candidates.slice(0, 20);
+  const shuffled = top.sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, limit);
+}
+
+/**
  * キャッシュをクリアする（テスト用）
  */
 export function clearCache(): void {

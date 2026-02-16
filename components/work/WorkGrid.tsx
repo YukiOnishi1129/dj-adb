@@ -1,12 +1,20 @@
 import { WorkCard } from "./WorkCard";
 import type { Work } from "@/types";
 
-interface WorkGridProps {
+export interface WorkGridProps {
   works: Work[];
   showRankBadge?: boolean;
+  /** カラム数（デフォルト: レスポンシブ 2→3→4） */
+  columns?: 2 | 3 | 4;
 }
 
-export function WorkGrid({ works, showRankBadge = false }: WorkGridProps) {
+const gridClasses = {
+  2: "grid grid-cols-2 gap-4",
+  3: "grid grid-cols-2 gap-4 sm:grid-cols-3",
+  4: "grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4",
+};
+
+export function WorkGrid({ works, showRankBadge = false, columns }: WorkGridProps) {
   if (works.length === 0) {
     return (
       <div className="text-center py-12">
@@ -15,8 +23,10 @@ export function WorkGrid({ works, showRankBadge = false }: WorkGridProps) {
     );
   }
 
+  const gridClass = columns ? gridClasses[columns] : gridClasses[4];
+
   return (
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+    <div className={gridClass}>
       {works.map((work, index) => (
         <WorkCard
           key={work.id}
