@@ -8,6 +8,7 @@ import {
   getCircleFeatures,
 } from "@/lib/parquet";
 import { WorkCard } from "@/components/work";
+import { FanzaLink } from "@/components/fanza-link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -216,10 +217,10 @@ function MainFocusCard({
         {/* CTAボタン */}
         <div className="flex flex-col sm:flex-row gap-3">
           {/* 試し読みボタン */}
-          <a
-            href={fanzaUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+          <FanzaLink
+            url={fanzaUrl}
+            workId={work.id}
+            source="sale_main"
             className="flex-1"
           >
             <Button variant="outline" className="w-full font-bold">
@@ -227,7 +228,7 @@ function MainFocusCard({
               試し読み
               <ExternalLink className="h-3 w-3 ml-1" />
             </Button>
-          </a>
+          </FanzaLink>
           {/* 購入ボタン */}
           <Link href={`/works/${work.id}`} className="flex-1">
             <Button className="w-full bg-sale hover:bg-sale/90 text-white text-base font-bold py-6">
@@ -365,17 +366,17 @@ function SubCard({
 
         {/* ボタン */}
         <div className="flex gap-2">
-          <a
-            href={fanzaUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+          <FanzaLink
+            url={fanzaUrl}
+            workId={work.id}
+            source="sale_sub"
             className="flex-1"
           >
             <Button variant="outline" size="sm" className="w-full text-xs font-bold">
               <Play className="h-3 w-3 mr-1" />
               試し読み
             </Button>
-          </a>
+          </FanzaLink>
           <Link href={`/works/${work.id}`} className="flex-1">
             <Button size="sm" className="w-full bg-sale hover:bg-sale/90 text-white text-xs font-bold">
               {getCTAText(work.discount_rate)}

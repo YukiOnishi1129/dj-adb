@@ -18,6 +18,7 @@ interface FixedPurchaseCtaProps {
   discountRate: number;
   fanzaUrl: string;
   saleEndDate: string | null;
+  workId?: number;
 }
 
 function formatPrice(price: number): string {
@@ -38,6 +39,7 @@ export function FixedPurchaseCta({
   discountRate,
   fanzaUrl,
   saleEndDate,
+  workId,
 }: FixedPurchaseCtaProps) {
   const isOnSale = salePrice !== null && salePrice < price;
   const displayPrice = isOnSale ? salePrice : price;
@@ -83,7 +85,10 @@ export function FixedPurchaseCta({
           rel="noopener noreferrer"
           onClick={() => {
             if (typeof window !== "undefined" && window.gtag) {
+              const match = fanzaUrl.match(/cid=([^/&]+)/);
               window.gtag("event", "fanza_click", {
+                content_id: match ? match[1] : undefined,
+                work_id: workId,
                 source: "fixed_cta",
               });
             }

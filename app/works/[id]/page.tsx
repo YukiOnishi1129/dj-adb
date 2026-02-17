@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SaleBannerCountdown } from "@/components/sale-banner-countdown";
 import { FixedPurchaseCta } from "@/components/fixed-purchase-cta";
+import { FanzaLink } from "@/components/fanza-link";
 import { WorkGrid } from "@/components/work";
 import {
   getWorks,
@@ -259,10 +260,10 @@ export default async function WorkDetailPage({ params }: Props) {
               </div>
 
               {/* 大きなCTAボタン */}
-              <a
-                href={fanzaUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+              <FanzaLink
+                url={fanzaUrl}
+                workId={work.id}
+                source="detail_top"
                 className={`flex w-full items-center justify-center gap-2 rounded-full py-4 text-lg font-bold text-white transition-all shadow-lg hover:shadow-xl hover:scale-[1.02] ${
                   isOnSale
                     ? "bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
@@ -289,7 +290,7 @@ export default async function WorkDetailPage({ params }: Props) {
                   />
                 </svg>
                 立ち読みしてみる
-              </a>
+              </FanzaLink>
 
               {/* 補足テキスト */}
               <p className="mt-2 text-center text-xs text-muted-foreground">
@@ -588,10 +589,10 @@ export default async function WorkDetailPage({ params }: Props) {
                       </div>
                     </td>
                     <td className="px-2 sm:px-4 py-3 text-center">
-                      <a
-                        href={fanzaUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                      <FanzaLink
+                        url={fanzaUrl}
+                        workId={work.id}
+                        source="detail_table"
                         className={`inline-flex items-center gap-1.5 rounded-md px-3 py-2 text-sm font-bold text-white transition-all hover:scale-105 ${isOnSale ? "bg-orange-500 hover:bg-orange-600" : "bg-emerald-600 hover:bg-emerald-700"}`}
                       >
                         <svg className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -599,7 +600,7 @@ export default async function WorkDetailPage({ params }: Props) {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                         </svg>
                         試し読み
-                      </a>
+                      </FanzaLink>
                     </td>
                   </tr>
                 </tbody>
@@ -671,10 +672,10 @@ export default async function WorkDetailPage({ params }: Props) {
               </div>
 
               {/* 大きなCTAボタン */}
-              <a
-                href={fanzaUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+              <FanzaLink
+                url={fanzaUrl}
+                workId={work.id}
+                source="detail_bottom"
                 className={`flex w-full items-center justify-center gap-2 rounded-full py-5 text-xl font-bold text-white transition-all shadow-lg hover:shadow-xl hover:scale-[1.02] ${
                   isOnSale
                     ? "bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
@@ -701,7 +702,7 @@ export default async function WorkDetailPage({ params }: Props) {
                   />
                 </svg>
                 立ち読みしてみる
-              </a>
+              </FanzaLink>
 
               {/* 補足テキスト */}
               <p className="mt-3 text-center text-xs text-muted-foreground">
@@ -823,6 +824,7 @@ export default async function WorkDetailPage({ params }: Props) {
         discountRate={work.discount_rate}
         fanzaUrl={fanzaUrl}
         saleEndDate={work.sale_end_date}
+        workId={work.id}
       />
     </div>
   );

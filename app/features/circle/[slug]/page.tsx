@@ -23,6 +23,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { FanzaLink } from "@/components/fanza-link";
 import { formatRating, formatPrice, getFanzaUrl } from "@/lib/utils";
 import type { Metadata } from "next";
 import type { Work, CircleFeatureWork } from "@/types";
@@ -175,10 +176,10 @@ function RecommendationCard({
         </div>
 
         <div className="flex gap-2">
-          <a
-            href={fanzaUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+          <FanzaLink
+            url={fanzaUrl}
+            workId={work.work_id}
+            source="circle_feature"
             className="flex-1"
           >
             <Button variant="outline" size="sm" className="w-full text-xs font-bold">
@@ -186,7 +187,7 @@ function RecommendationCard({
               試し読み
               <ExternalLink className="h-3 w-3 ml-1" />
             </Button>
-          </a>
+          </FanzaLink>
           <Link href={`/works/${work.work_id}`} className="flex-1">
             <Button size="sm" className="w-full bg-pink-500 hover:bg-pink-600 text-white text-xs font-bold">
               詳細を見る
