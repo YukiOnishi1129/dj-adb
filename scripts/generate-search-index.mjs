@@ -106,7 +106,9 @@ function convertToSearchItem(work) {
     img: work.thumbnail_url || "",
     pg: work.page_count || 0, // ページ数
     rt: work.rating || null,
+    rc: work.review_count || null,
     rk: work.ranking || null,
+    saleEnd: work.sale_end_date || null,
   };
 }
 

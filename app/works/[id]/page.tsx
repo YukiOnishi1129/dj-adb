@@ -303,7 +303,7 @@ export default async function WorkDetailPage({ params }: Props) {
           {work.genre_tags && work.genre_tags.length > 0 && (
             <div className="flex flex-wrap gap-2">
               {work.genre_tags.map((tag) => (
-                <Link key={tag} href={`/search?q=${encodeURIComponent(tag)}`}>
+                <Link key={tag} href={`/tags/${encodeURIComponent(tag)}`}>
                   <Badge
                     variant="tag"
                     className="cursor-pointer hover:opacity-80"
@@ -463,7 +463,7 @@ export default async function WorkDetailPage({ params }: Props) {
                   </div>
                   <div className="flex flex-wrap gap-1.5 justify-end ml-4">
                     {work.genre_tags.map((tag) => (
-                      <Link key={tag} href={`/search?q=${encodeURIComponent(tag)}`}>
+                      <Link key={tag} href={`/tags/${encodeURIComponent(tag)}`}>
                         <Badge
                           variant="tag"
                           className="text-xs cursor-pointer hover:opacity-80"

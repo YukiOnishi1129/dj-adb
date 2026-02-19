@@ -25,7 +25,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_724748/d_724748pl.jpg",
     "pg": 100,
     "rt": 4.85,
-    "rk": 1
+    "rc": null,
+    "rk": 1,
+    "saleEnd": null
   },
   {
     "id": 3,
@@ -54,7 +56,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_728764/d_728764pl.jpg",
     "pg": 148,
     "rt": 4.42,
-    "rk": 2
+    "rc": null,
+    "rk": 2,
+    "saleEnd": null
   },
   {
     "id": 14,
@@ -80,7 +84,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_732645/d_732645pl.jpg",
     "pg": 119,
     "rt": 5,
-    "rk": 3
+    "rc": null,
+    "rk": 3,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 1,
@@ -108,7 +114,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_658585/d_658585pl.jpg",
     "pg": 71,
     "rt": 4.9,
-    "rk": 4
+    "rc": null,
+    "rk": 4,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 62,
@@ -136,7 +144,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_725772/d_725772pl.jpg",
     "pg": 109,
     "rt": 5,
-    "rk": 5
+    "rc": null,
+    "rk": 5,
+    "saleEnd": null
   },
   {
     "id": 2,
@@ -164,7 +174,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_714516/d_714516pl.jpg",
     "pg": 46,
     "rt": 5,
-    "rk": 6
+    "rc": null,
+    "rk": 6,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 64,
@@ -192,7 +204,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_728520/d_728520pl.jpg",
     "pg": 210,
     "rt": 5,
-    "rk": 7
+    "rc": null,
+    "rk": 7,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 65,
@@ -221,7 +235,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_692288/d_692288pl.jpg",
     "pg": 107,
     "rt": 5,
-    "rk": 8
+    "rc": null,
+    "rk": 8,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 34,
@@ -250,7 +266,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_474370/d_474370pl.jpg",
     "pg": 135,
     "rt": 4.48,
-    "rk": 9
+    "rc": null,
+    "rk": 9,
+    "saleEnd": "2026-02-23 23:59:00"
   },
   {
     "id": 6,
@@ -279,7 +297,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_708809/d_708809pl.jpg",
     "pg": 70,
     "rt": 5,
-    "rk": 10
+    "rc": null,
+    "rk": 10,
+    "saleEnd": null
   },
   {
     "id": 63,
@@ -307,7 +327,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_719626/d_719626pl.jpg",
     "pg": 66,
     "rt": 4.57,
-    "rk": 11
+    "rc": null,
+    "rk": 11,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 66,
@@ -335,7 +357,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_607318/d_607318pl.jpg",
     "pg": 90,
     "rt": 5,
-    "rk": 12
+    "rc": null,
+    "rk": 12,
+    "saleEnd": "2026-03-14 23:59:00"
   },
   {
     "id": 49,
@@ -362,7 +386,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_731124/d_731124pl.jpg",
     "pg": 120,
     "rt": 5,
-    "rk": 13
+    "rc": null,
+    "rk": 13,
+    "saleEnd": null
   },
   {
     "id": 43,
@@ -391,7 +417,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_633782/d_633782pl.jpg",
     "pg": 293,
     "rt": 4.79,
-    "rk": 14
+    "rc": null,
+    "rk": 14,
+    "saleEnd": "2026-02-23 23:59:00"
   },
   {
     "id": 58,
@@ -419,7 +447,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_348613/d_348613pl.jpg",
     "pg": 124,
     "rt": 4.58,
-    "rk": 15
+    "rc": null,
+    "rk": 15,
+    "saleEnd": "2026-02-23 23:59:00"
   },
   {
     "id": 67,
@@ -447,7 +477,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_725294/d_725294pl.jpg",
     "pg": 275,
     "rt": 5,
-    "rk": 16
+    "rc": null,
+    "rk": 16,
+    "saleEnd": "2026-03-14 23:59:00"
   },
   {
     "id": 69,
@@ -475,7 +507,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_728524/d_728524pl.jpg",
     "pg": 482,
     "rt": 5,
-    "rk": 17
+    "rc": null,
+    "rk": 17,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 10,
@@ -503,7 +537,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_726854/d_726854pl.jpg",
     "pg": 65,
     "rt": 4.8,
-    "rk": 18
+    "rc": null,
+    "rk": 18,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 7,
@@ -532,7 +568,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_722571/d_722571pl.jpg",
     "pg": 528,
     "rt": 5,
-    "rk": 19
+    "rc": null,
+    "rk": 19,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 70,
@@ -560,7 +598,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_678762/d_678762pl.jpg",
     "pg": 93,
     "rt": 5,
-    "rk": 20
+    "rc": null,
+    "rk": 20,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 124,
@@ -588,7 +628,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_730633/d_730633pl.jpg",
     "pg": 0,
     "rt": null,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 123,
@@ -615,7 +657,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_730693/d_730693pl.jpg",
     "pg": 0,
     "rt": null,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 122,
@@ -643,7 +687,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_731623/d_731623pl.jpg",
     "pg": 0,
     "rt": null,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 121,
@@ -671,7 +717,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_491994/d_491994pl.jpg",
     "pg": 0,
     "rt": null,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 120,
@@ -699,7 +747,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_695579/d_695579pl.jpg",
     "pg": 0,
     "rt": null,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 119,
@@ -727,7 +777,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_607699/d_607699pl.jpg",
     "pg": 0,
     "rt": null,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 118,
@@ -755,7 +807,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_708247/d_708247pl.jpg",
     "pg": 0,
     "rt": null,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 117,
@@ -780,7 +834,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_646752/d_646752pl.jpg",
     "pg": 0,
     "rt": null,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 116,
@@ -808,7 +864,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_683546/d_683546pl.jpg",
     "pg": 0,
     "rt": null,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 115,
@@ -836,7 +894,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_703873/d_703873pl.jpg",
     "pg": 0,
     "rt": null,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 114,
@@ -864,7 +924,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_730947/d_730947pl.jpg",
     "pg": 0,
     "rt": null,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 113,
@@ -892,7 +954,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_713158/d_713158pl.jpg",
     "pg": 0,
     "rt": null,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 112,
@@ -917,7 +981,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_715218/d_715218pl.jpg",
     "pg": 0,
     "rt": null,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 111,
@@ -945,7 +1011,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_567776/d_567776pl.jpg",
     "pg": 0,
     "rt": null,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 110,
@@ -974,7 +1042,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_258564/d_258564pl.jpg",
     "pg": 30,
     "rt": 4.65,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-16 23:59:00"
   },
   {
     "id": 109,
@@ -998,7 +1068,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_654618/d_654618pl.jpg",
     "pg": 51,
     "rt": 4.43,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-02-20 23:59:00"
   },
   {
     "id": 108,
@@ -1026,7 +1098,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_633156/d_633156pl.jpg",
     "pg": 33,
     "rt": 4.75,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 107,
@@ -1050,7 +1124,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_601005/d_601005pl.jpg",
     "pg": 89,
     "rt": 4.93,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 106,
@@ -1078,7 +1154,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_710858/d_710858pl.jpg",
     "pg": 146,
     "rt": 5,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-04-16 23:59:00"
   },
   {
     "id": 105,
@@ -1105,7 +1183,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_732236/d_732236pl.jpg",
     "pg": 82,
     "rt": 1,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-13 23:59:00"
   },
   {
     "id": 104,
@@ -1133,7 +1213,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_668234/d_668234pl.jpg",
     "pg": 50,
     "rt": 5,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 103,
@@ -1161,7 +1243,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_635393/d_635393pl.jpg",
     "pg": 32,
     "rt": 4.82,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 102,
@@ -1189,7 +1273,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_575221/d_575221pl.jpg",
     "pg": 326,
     "rt": 5,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 101,
@@ -1217,7 +1303,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_598390/d_598390pl.jpg",
     "pg": 85,
     "rt": 4.77,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 100,
@@ -1242,7 +1330,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_253355/d_253355pl.jpg",
     "pg": 96,
     "rt": 4.54,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-02-23 23:59:00"
   },
   {
     "id": 99,
@@ -1270,7 +1360,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_724664/d_724664pl.jpg",
     "pg": 100,
     "rt": 5,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-12 23:59:00"
   },
   {
     "id": 98,
@@ -1295,7 +1387,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_550162/d_550162pl.jpg",
     "pg": 107,
     "rt": 3.67,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-02-20 23:59:00"
   },
   {
     "id": 97,
@@ -1322,7 +1416,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_731122/d_731122pl.jpg",
     "pg": 75,
     "rt": 5,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-10 23:59:00"
   },
   {
     "id": 96,
@@ -1346,7 +1442,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_651653/d_651653pl.jpg",
     "pg": 47,
     "rt": 4.85,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 95,
@@ -1372,7 +1470,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_730980/d_730980pl.jpg",
     "pg": 48,
     "rt": 1,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 94,
@@ -1399,7 +1499,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_715256/d_715256pl.jpg",
     "pg": 95,
     "rt": 5,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 93,
@@ -1427,7 +1529,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_724709/d_724709pl.jpg",
     "pg": 110,
     "rt": 4.8,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-04-14 23:59:00"
   },
   {
     "id": 92,
@@ -1454,7 +1558,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_712356/d_712356pl.jpg",
     "pg": 124,
     "rt": 5,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-02 23:59:00"
   },
   {
     "id": 91,
@@ -1481,7 +1587,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_720988/d_720988pl.jpg",
     "pg": 129,
     "rt": 4.5,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 90,
@@ -1509,7 +1617,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_730348/d_730348pl.jpg",
     "pg": 170,
     "rt": 3,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-14 23:59:00"
   },
   {
     "id": 89,
@@ -1538,7 +1648,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_274604/d_274604pl.jpg",
     "pg": 128,
     "rt": 4.66,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-02-23 23:59:00"
   },
   {
     "id": 88,
@@ -1566,7 +1678,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_719798/d_719798pl.jpg",
     "pg": 600,
     "rt": 5,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 87,
@@ -1594,7 +1708,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_731359/d_731359pl.jpg",
     "pg": 160,
     "rt": 1,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-14 23:59:00"
   },
   {
     "id": 86,
@@ -1622,7 +1738,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_570394/d_570394pl.jpg",
     "pg": 31,
     "rt": 4,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 85,
@@ -1650,7 +1768,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_720374/d_720374pl.jpg",
     "pg": 563,
     "rt": 1,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 84,
@@ -1677,7 +1797,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_196291/d_196291pl.jpg",
     "pg": 323,
     "rt": 4.47,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-02-23 23:59:00"
   },
   {
     "id": 83,
@@ -1705,7 +1827,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_708849/d_708849pl.jpg",
     "pg": 172,
     "rt": 4.67,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-10 23:59:00"
   },
   {
     "id": 82,
@@ -1733,7 +1857,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_476386/d_476386pl.jpg",
     "pg": 44,
     "rt": 4.94,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 81,
@@ -1761,7 +1887,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_726143/d_726143pl.jpg",
     "pg": 146,
     "rt": 5,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 80,
@@ -1789,7 +1917,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_728346/d_728346pl.jpg",
     "pg": 47,
     "rt": 5,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 79,
@@ -1817,7 +1947,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_682209/d_682209pl.jpg",
     "pg": 314,
     "rt": 4,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 78,
@@ -1844,7 +1976,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_732108/d_732108pl.jpg",
     "pg": 169,
     "rt": 5,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 77,
@@ -1872,7 +2006,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_289704/d_289704pl.jpg",
     "pg": 135,
     "rt": 4.55,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-02-23 23:59:00"
   },
   {
     "id": 76,
@@ -1900,7 +2036,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_712409/d_712409pl.jpg",
     "pg": 99,
     "rt": 3.63,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 75,
@@ -1927,7 +2065,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_731479/d_731479pl.jpg",
     "pg": 182,
     "rt": 1,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 74,
@@ -1952,7 +2092,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_239596/d_239596pl.jpg",
     "pg": 76,
     "rt": 4.82,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 73,
@@ -1982,7 +2124,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_417097/d_417097pl.jpg",
     "pg": 210,
     "rt": 4.59,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-02-23 23:59:00"
   },
   {
     "id": 72,
@@ -2010,7 +2154,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_236775/d_236775pl.jpg",
     "pg": 260,
     "rt": 4.71,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-02-23 23:59:00"
   },
   {
     "id": 71,
@@ -2038,7 +2184,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_689364/d_689364pl.jpg",
     "pg": 42,
     "rt": 5,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 68,
@@ -2066,7 +2214,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_388430/d_388430pl.jpg",
     "pg": 574,
     "rt": 4.69,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-02-23 23:59:00"
   },
   {
     "id": 59,
@@ -2094,7 +2244,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_715523/d_715523pl.jpg",
     "pg": 120,
     "rt": 5,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 57,
@@ -2121,7 +2273,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_634909/d_634909pl.jpg",
     "pg": 963,
     "rt": 1,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 56,
@@ -2148,7 +2302,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_721379/d_721379pl.jpg",
     "pg": 153,
     "rt": 4.91,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-02 23:59:00"
   },
   {
     "id": 55,
@@ -2176,7 +2332,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_725570/d_725570pl.jpg",
     "pg": 102,
     "rt": 4.8,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 54,
@@ -2201,7 +2359,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_171205/d_171205pl.jpg",
     "pg": 28,
     "rt": 4.84,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 53,
@@ -2229,7 +2389,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_452003/d_452003pl.jpg",
     "pg": 40,
     "rt": 4.9,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 52,
@@ -2257,7 +2419,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_719384/d_719384pl.jpg",
     "pg": 138,
     "rt": 4.95,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 51,
@@ -2285,7 +2449,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_635816/d_635816pl.jpg",
     "pg": 149,
     "rt": 5,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 50,
@@ -2313,7 +2479,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_714891/d_714891pl.jpg",
     "pg": 79,
     "rt": 5,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 48,
@@ -2341,7 +2509,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_727276/d_727276pl.jpg",
     "pg": 72,
     "rt": 4.57,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-02 23:59:00"
   },
   {
     "id": 47,
@@ -2369,7 +2539,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_725089/d_725089pl.jpg",
     "pg": 71,
     "rt": 4.75,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 46,
@@ -2398,7 +2570,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_333725/d_333725pl.jpg",
     "pg": 35,
     "rt": 4.59,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 45,
@@ -2426,7 +2600,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_708517/d_708517pl.jpg",
     "pg": 61,
     "rt": 4.83,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 44,
@@ -2453,7 +2629,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_729205/d_729205pl.jpg",
     "pg": 85,
     "rt": 4,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-05 23:59:00"
   },
   {
     "id": 42,
@@ -2477,7 +2655,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_725945/d_725945pl.jpg",
     "pg": 101,
     "rt": 5,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-02-28 23:59:00"
   },
   {
     "id": 41,
@@ -2505,7 +2685,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_714332/d_714332pl.jpg",
     "pg": 120,
     "rt": 4.72,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 40,
@@ -2533,7 +2715,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_711567/d_711567pl.jpg",
     "pg": 54,
     "rt": 5,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 39,
@@ -2560,7 +2744,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_703809/d_703809pl.jpg",
     "pg": 107,
     "rt": 4.67,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-05 23:59:00"
   },
   {
     "id": 38,
@@ -2584,7 +2770,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_205013/d_205013pl.jpg",
     "pg": 52,
     "rt": 4.79,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 37,
@@ -2613,7 +2801,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_645166/d_645166pl.jpg",
     "pg": 75,
     "rt": 4.9,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 36,
@@ -2641,7 +2831,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_728408/d_728408pl.jpg",
     "pg": 44,
     "rt": 5,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 35,
@@ -2663,7 +2855,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_724670/d_724670pl.jpg",
     "pg": 64,
     "rt": 5,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 33,
@@ -2691,7 +2885,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_427740/d_427740pl.jpg",
     "pg": 60,
     "rt": 4.53,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 32,
@@ -2719,7 +2915,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_314246/d_314246pl.jpg",
     "pg": 53,
     "rt": 4.18,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 31,
@@ -2747,7 +2945,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_725421/d_725421pl.jpg",
     "pg": 113,
     "rt": 4.08,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 30,
@@ -2776,7 +2976,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_709334/d_709334pl.jpg",
     "pg": 73,
     "rt": 5,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 29,
@@ -2803,7 +3005,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_726199/d_726199pl.jpg",
     "pg": 104,
     "rt": 4.5,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 28,
@@ -2833,7 +3037,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_423289/d_423289pl.jpg",
     "pg": 40,
     "rt": 4.85,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 27,
@@ -2862,7 +3068,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_728421/d_728421pl.jpg",
     "pg": 218,
     "rt": 1,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 26,
@@ -2889,7 +3097,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_728714/d_728714pl.jpg",
     "pg": 93,
     "rt": 5,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-02-17 23:59:00"
   },
   {
     "id": 25,
@@ -2917,7 +3127,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_723649/d_723649pl.jpg",
     "pg": 109,
     "rt": 4.71,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-02-27 23:59:00"
   },
   {
     "id": 24,
@@ -2943,7 +3155,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_707810/d_707810pl.jpg",
     "pg": 83,
     "rt": 5,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 23,
@@ -2971,7 +3185,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_709480/d_709480pl.jpg",
     "pg": 81,
     "rt": 5,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 22,
@@ -2998,7 +3214,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_712825/d_712825pl.jpg",
     "pg": 97,
     "rt": 4.8,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 21,
@@ -3026,7 +3244,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_688096/d_688096pl.jpg",
     "pg": 255,
     "rt": 4.83,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-02-20 23:59:00"
   },
   {
     "id": 20,
@@ -3053,7 +3273,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_715711/d_715711pl.jpg",
     "pg": 130,
     "rt": 5,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-02 23:59:00"
   },
   {
     "id": 19,
@@ -3080,7 +3302,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_708268/d_708268pl.jpg",
     "pg": 382,
     "rt": 3.25,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 18,
@@ -3109,7 +3333,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_708698/d_708698pl.jpg",
     "pg": 96,
     "rt": 4.83,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 17,
@@ -3137,7 +3363,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_706422/d_706422pl.jpg",
     "pg": 100,
     "rt": 5,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-05-07 23:59:00"
   },
   {
     "id": 16,
@@ -3165,7 +3393,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_713242/d_713242pl.jpg",
     "pg": 281,
     "rt": 5,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 15,
@@ -3193,7 +3423,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_505193/d_505193pl.jpg",
     "pg": 63,
     "rt": 4.84,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 13,
@@ -3221,7 +3453,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_724627/d_724627pl.jpg",
     "pg": 87,
     "rt": 4,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-02-24 23:59:00"
   },
   {
     "id": 12,
@@ -3249,7 +3483,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_626776/d_626776pl.jpg",
     "pg": 53,
     "rt": 4.75,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 11,
@@ -3277,7 +3513,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_725857/d_725857pl.jpg",
     "pg": 80,
     "rt": 5,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 9,
@@ -3305,7 +3543,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_720445/d_720445pl.jpg",
     "pg": 33,
     "rt": 4.77,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 8,
@@ -3333,7 +3573,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_721666/d_721666pl.jpg",
     "pg": 40,
     "rt": 5,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   },
   {
     "id": 5,
@@ -3358,7 +3600,9 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_664558/d_664558pl.jpg",
     "pg": 45,
     "rt": 4.33,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": "2026-03-02 11:59:00"
   },
   {
     "id": 4,
@@ -3384,6 +3628,8 @@
     "img": "https://doujin-assets.dmm.co.jp/digital/comic/d_630536/d_630536pl.jpg",
     "pg": 95,
     "rt": 4.56,
-    "rk": null
+    "rc": null,
+    "rk": null,
+    "saleEnd": null
   }
 ]

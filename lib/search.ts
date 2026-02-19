@@ -12,7 +12,9 @@ export type SearchItem = {
   img: string; // サムネイルURL
   pg: number; // ページ数
   rt: number | null; // 評価
+  rc: number | null; // レビュー数
   rk: number | null; // ランキング
+  saleEnd: string | null; // セール終了日
 };
 
 export type SortType = "rank" | "new" | "discount" | "price" | "rating";
