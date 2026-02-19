@@ -6,9 +6,8 @@ import Link from "next/link";
 import { Search, ChevronDown, Check, X, JapaneseYen, Loader2 } from "lucide-react";
 import { useSearch } from "@/hooks/use-search";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { formatDiscount } from "@/lib/utils";
-import { getUnitPrice } from "@/lib/search";
 import type { SortType, PriceFilter } from "@/lib/search";
 
 function getTimeRemaining(endDate: string): string {
@@ -210,84 +209,104 @@ function SearchContentInner() {
         <p className="text-muted-foreground">読み込み中...</p>
       ) : displayResults.length > 0 ? (
         <>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
             {displayResults.slice(0, displayCount).map((item) => {
-              const unitPrice = getUnitPrice(item);
+              const isOnSale = item.dr !== null && item.dr > 0;
               const hasRating = item.rt && item.rt > 0;
-              const hasSaleEnd = item.dr && item.dr > 0 && item.saleEnd;
 
               return (
                 <Link key={item.id} href={`/works/${item.id}`}>
-                  <Card className="group h-full overflow-hidden transition-colors hover:border-accent">
+                  <Card className="group overflow-hidden transition-all duration-200 hover:shadow-md hover:scale-[1.02]">
                     {/* サムネイル */}
-                    <div className="relative">
+                    <div className="relative overflow-hidden bg-muted">
                       <img
-                        src={item.img || "https://placehold.co/600x400/f4f4f5/71717a?text=No+Image"}
+                        src={item.img || "https://placehold.co/300x400/f4f4f5/71717a?text=No+Image"}
                         alt={item.t}
-                        className="aspect-[4/3] w-full object-cover"
+                        className="w-full h-auto transition-transform duration-300 group-hover:scale-105"
                         loading="lazy"
                       />
-                      {item.dr && item.dr > 0 && (
-                        <Badge variant="sale" className="absolute left-2 top-2">
-                          {formatDiscount(item.dr)}
-                        </Badge>
-                      )}
+                      {/* ランキングバッジ */}
                       {item.rk && item.rk <= 100 && (
                         <div
-                          className={`absolute right-2 top-2 rounded px-1.5 py-0.5 text-xs font-bold text-white ${
+                          className={`absolute -left-1 -top-1 z-10 flex h-8 w-8 items-center justify-center rounded-full font-bold shadow-lg ${
                             item.rk === 1
-                              ? "bg-gradient-to-r from-yellow-400 to-yellow-600"
+                              ? "bg-gradient-to-br from-yellow-400 via-yellow-500 to-amber-600 text-amber-900"
                               : item.rk === 2
-                                ? "bg-gradient-to-r from-gray-300 to-gray-500"
+                                ? "bg-gradient-to-br from-gray-300 via-gray-400 to-gray-500 text-gray-800"
                                 : item.rk === 3
-                                  ? "bg-gradient-to-r from-amber-600 to-amber-800"
-                                  : "bg-black/70"
+                                  ? "bg-gradient-to-br from-orange-400 via-orange-500 to-orange-700 text-orange-900"
+                                  : "bg-pink-500 text-white"
                           }`}
                         >
-                          #{item.rk}
+                          {item.rk}
+                        </div>
+                      )}
+                      {/* セールバッジ */}
+                      {isOnSale && (
+                        <Badge
+                          variant="sale"
+                          className={`absolute ${item.rk && item.rk <= 100 ? "top-2 right-2" : "top-2 left-2"}`}
+                        >
+                          {formatDiscount(item.dr!)}
+                        </Badge>
+                      )}
+                      {/* 高評価バッジ */}
+                      {item.rt && item.rt >= 4.5 && (
+                        <div className="absolute bottom-2 left-2 flex items-center gap-0.5 rounded bg-amber-500/90 px-1.5 py-0.5 text-[10px] font-bold text-white">
+                          ★ 高評価
+                        </div>
+                      )}
+                      {/* ページ数バッジ */}
+                      {item.pg > 0 && (
+                        <div className="absolute bottom-2 right-2 flex items-center gap-1 rounded bg-black/70 px-1.5 py-0.5 text-[10px] text-white">
+                          {item.pg}P
                         </div>
                       )}
                     </div>
 
-                    <CardContent className="p-3">
+                    {/* 情報エリア */}
+                    <div className="p-3">
+                      {/* サークル名 */}
+                      <div className="mb-1.5">
+                        <Badge variant="circle" className="text-[10px]">
+                          {item.c}
+                        </Badge>
+                      </div>
+
                       {/* タイトル */}
-                      <h3 className="mb-1 line-clamp-2 text-sm font-medium text-foreground group-hover:text-accent">
+                      <h3 className="mb-1 line-clamp-2 text-sm font-medium leading-tight text-foreground">
                         {item.t}
                       </h3>
 
-                      {/* サークル名 */}
-                      <p className="mb-2 text-xs text-muted-foreground">{item.a || item.c}</p>
-
-                      {/* ページ数 */}
-                      {item.pg > 0 && (
-                        <div className="mb-2 text-xs text-muted-foreground">
-                          <span>{item.pg}ページ</span>
+                      {/* ジャンルタグ */}
+                      {item.tg && item.tg.length > 0 && (
+                        <div className="mb-2 flex flex-wrap gap-1">
+                          {item.tg.slice(0, 2).map((tag) => (
+                            <Badge key={tag} variant="tag" className="text-[10px]">
+                              {tag}
+                            </Badge>
+                          ))}
                         </div>
                       )}
 
-                      {/* 価格 + セール残り時間 */}
-                      <div className="flex items-center justify-between gap-1">
-                        <div className="flex items-baseline gap-1.5">
-                          <span className="text-lg font-bold text-foreground">
-                            ¥{item.p.toLocaleString()}
+                      {/* 価格エリア */}
+                      <div className="flex items-baseline gap-1.5 flex-wrap">
+                        {isOnSale && (
+                          <span className="text-xs text-muted-foreground line-through">
+                            ¥{item.dp.toLocaleString()}
                           </span>
-                          {unitPrice && (
-                            <span className="text-[10px] font-medium text-primary">
-                              ({unitPrice})
-                            </span>
-                          )}
-                        </div>
-                        {hasSaleEnd && (
-                          <span className="text-[10px] font-medium text-orange-500">
-                            {getTimeRemaining(item.saleEnd!)}
+                        )}
+                        <span
+                          className={`text-base font-bold ${isOnSale ? "text-red-500" : "text-foreground"}`}
+                        >
+                          ¥{item.p.toLocaleString()}
+                        </span>
+                        {isOnSale && item.saleEnd && (
+                          <span className="text-[10px] text-orange-500 font-medium">
+                            ({getTimeRemaining(item.saleEnd)})
                           </span>
                         )}
                       </div>
-                      {item.dr && item.dr > 0 && (
-                        <span className="text-xs text-muted-foreground line-through">
-                          ¥{item.dp.toLocaleString()}
-                        </span>
-                      )}
 
                       {/* 評価 */}
                       {hasRating && (
@@ -307,14 +326,12 @@ function SearchContentInner() {
                               );
                             })}
                           </div>
-                          {item.rc && item.rc > 0 && (
-                            <span className="text-xs text-muted-foreground">
-                              ({item.rc})
-                            </span>
-                          )}
+                          <span className="text-xs font-bold text-orange-500">
+                            {item.rt!.toFixed(1)}
+                          </span>
                         </div>
                       )}
-                    </CardContent>
+                    </div>
                   </Card>
                 </Link>
               );
