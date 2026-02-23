@@ -37,13 +37,27 @@ export async function generateMetadata(): Promise<Metadata> {
     ? `${feature.main_headline} - セール中のおすすめ作品を厳選。迷ったらここから選べばハズレなし。`
     : "セール中のおすすめ作品を厳選。迷ったらここから選べばハズレなし。";
 
+  // メイン作品のサムネイルをOGP画像に使用
+  let ogpImageUrl: string | undefined;
+  if (feature?.main_work_id) {
+    const mainWork = await getWorkById(feature.main_work_id);
+    ogpImageUrl = mainWork?.thumbnail_url || undefined;
+  }
+
   return {
     title,
     description,
     openGraph: {
       title,
       description,
+      images: ogpImageUrl ? [{ url: ogpImageUrl, width: 1200, height: 630 }] : [],
       type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ogpImageUrl ? [ogpImageUrl] : [],
     },
   };
 }
