@@ -40,13 +40,15 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       type: "website",
-      images: ["/ogp/recommendation_ogp.png"],
+      images: [
+        { url: "https://dj-adb.com/ogp/recommendation_ogp.png", width: 1200, height: 630 },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: ["/ogp/recommendation_ogp.png"],
+      images: ["https://dj-adb.com/ogp/recommendation_ogp.png"],
     },
   };
 }
