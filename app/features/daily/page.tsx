@@ -40,6 +40,13 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       type: "website",
+      images: ["/ogp/recommendation_ogp.png"],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/ogp/recommendation_ogp.png"],
     },
   };
 }
