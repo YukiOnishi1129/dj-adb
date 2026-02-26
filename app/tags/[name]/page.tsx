@@ -9,39 +9,32 @@ import { Card, CardContent } from "@/components/ui/card";
 import { getWorks, getGenreFeatures } from "@/lib/parquet";
 import type { GenreFeature } from "@/types";
 
-// ジャンル特集のタグマッピング（バッチと同じ定義）
-const GENRE_TAG_MAP: Record<string, string[]> = {
-  "fellatio": ["フェラ", "フェラチオ", "口淫"],
-  "big-breasts": ["巨乳", "爆乳", "おっぱい"],
-  "ntr": ["NTR", "寝取り", "寝取られ", "寝取らせ"],
-  "uniform": ["制服", "セーラー服", "ブレザー"],
-  "anal": ["アナル", "肛門", "後ろ"],
-  "virgin": ["処女", "初体験", "初めて"],
-  "school": ["学園", "学校", "スクール"],
-  "paizuri": ["パイズリ", "挟射"],
-  "lovey-dovey": ["ラブラブ", "あまあま", "甘々", "イチャラブ"],
-  "gender-bender": ["性転換", "女体化", "TS", "TSF"],
-  "married-woman": ["人妻", "主婦", "奥さん"],
-  "bukkake": ["ぶっかけ", "顔射", "精液"],
-  "mature": ["熟女", "年上", "おばさん"],
-  "bitch": ["ビッチ", "淫乱", "ヤリマン"],
-  "outdoor": ["野外", "露出", "屋外"],
-  "harem": ["ハーレム", "複数プレイ"],
-  "student": ["学生", "JK", "女子高生"],
-  "masturbation": ["オナニー", "自慰", "ひとりエッチ"],
-  "best-collection": ["ベスト", "総集編", "まとめ"],
-  "pregnancy": ["妊娠", "孕ませ", "中出し", "種付け"],
-  "ass": ["お尻", "ヒップ", "尻"],
-  "tentacle": ["触手", "蠢く"],
-};
-
-// タグ名 → slugの逆引きマップ
-const TAG_TO_SLUG = new Map<string, string>();
-for (const [slug, tags] of Object.entries(GENRE_TAG_MAP)) {
-  for (const tag of tags) {
-    TAG_TO_SLUG.set(tag, slug);
-  }
-}
+// タグ名 → 性癖特集slugの逆引きマップ（タグ一覧の実際のタグ名に合わせる）
+const TAG_TO_SLUG = new Map<string, string>([
+  ["フェラ", "fellatio"],
+  ["巨乳", "big-breasts"],
+  ["おっぱい", "big-breasts"],
+  ["寝取り・寝取られ・NTR", "ntr"],
+  ["制服", "uniform"],
+  ["アナル", "anal"],
+  ["処女", "virgin"],
+  ["学園もの", "school"],
+  ["パイズリ", "paizuri"],
+  ["ラブラブ・あまあま", "lovey-dovey"],
+  ["性転換・女体化", "gender-bender"],
+  ["人妻・主婦", "married-woman"],
+  ["ぶっかけ", "bukkake"],
+  ["熟女", "mature"],
+  ["ビッチ", "bitch"],
+  ["野外・露出", "outdoor"],
+  ["ハーレム", "harem"],
+  ["学生", "student"],
+  ["オナニー", "masturbation"],
+  ["ベスト・総集編", "best-collection"],
+  ["妊娠・孕ませ", "pregnancy"],
+  ["お尻・ヒップ", "ass"],
+  ["触手", "tentacle"],
+]);
 
 interface Props {
   params: Promise<{ name: string }>;
