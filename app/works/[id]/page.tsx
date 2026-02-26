@@ -725,7 +725,7 @@ export default async function WorkDetailPage({ params }: Props) {
                 <span className="text-pink-500">🎨</span>
                 {work.circle_name}の特集ページ
               </h2>
-              <Link href={`/features/circle/${encodeURIComponent(circleFeature.slug)}`}>
+              <Link href={`/features/circle/${circleFeature.slug}`}>
                 <Card className="overflow-hidden hover:shadow-lg transition-shadow">
                   <div className="relative">
                     {circleFeature.thumbnail_url && (
@@ -789,7 +789,7 @@ export default async function WorkDetailPage({ params }: Props) {
               <h2 className="text-lg font-bold text-foreground">🎨 人気サークル特集</h2>
               <div className="grid gap-3 md:grid-cols-3">
                 {allCircleFeatures.slice(0, 6).map((feature) => (
-                  <Link key={feature.slug} href={`/features/circle/${encodeURIComponent(feature.slug)}`}>
+                  <Link key={feature.slug} href={`/features/circle/${feature.slug}`}>
                     <div className="flex items-center gap-3 p-3 rounded-lg border border-pink-500/30 hover:border-pink-500/50 transition-all bg-card">
                       {feature.thumbnail_url && (
                         <div className="relative w-16 h-16 shrink-0 rounded-lg overflow-hidden">

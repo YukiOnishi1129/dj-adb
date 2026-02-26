@@ -478,7 +478,7 @@ export default async function CircleFeatureDetailPage({ params }: Props) {
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {otherFeatures.map((other) => (
-                <Link key={other.slug} href={`/features/circle/${encodeURIComponent(other.slug)}`}>
+                <Link key={other.slug} href={`/features/circle/${other.slug}`}>
                   <Card className="overflow-hidden border border-border hover:border-pink-500/50 transition-all">
                     <div className="relative aspect-[16/9] overflow-hidden bg-muted">
                       <img

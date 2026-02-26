@@ -595,7 +595,7 @@ export default async function SaleTokushuPage() {
             </h3>
             <div className="grid gap-3">
               {circleFeatures.slice(0, 5).map((cf) => (
-                <Link key={cf.slug} href={`/features/circle/${encodeURIComponent(cf.slug)}`}>
+                <Link key={cf.slug} href={`/features/circle/${cf.slug}`}>
                   <Card className="overflow-hidden border border-pink-500/30 hover:border-pink-500/50 transition-all">
                     <div className="flex items-center gap-4 p-4">
                       {cf.thumbnail_url && (

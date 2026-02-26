@@ -104,7 +104,7 @@ export default async function CircleDetailPage({ params }: Props) {
         {/* サークル特集バナー */}
         {circleFeature && (
           <div className="mb-8">
-            <Link href={`/features/circle/${encodeURIComponent(circleFeature.slug)}`}>
+            <Link href={`/features/circle/${circleFeature.slug}`}>
               <Card className="overflow-hidden border border-pink-500/30 hover:border-pink-500/50 transition-all">
                 {circleFeature.thumbnail_url ? (
                   <div className="relative aspect-[21/9] overflow-hidden">
