@@ -2,9 +2,14 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, Users } from "lucide-react";
+import { ChevronLeft, ChevronRight, Users, Flame } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import type { CircleFeature } from "@/types";
+import type { CircleFeature, GenreFeature } from "@/types";
+
+// カルーセルに表示する統一型
+export type FeatureCarouselItem =
+  | { type: "circle"; feature: CircleFeature }
+  | { type: "genre"; feature: GenreFeature };
 
 interface CircleCarouselProps {
   features: CircleFeature[];
@@ -12,8 +17,14 @@ interface CircleCarouselProps {
   interval?: number;
 }
 
-// モバイル用カルーセルアイテム
-function CarouselItem({ feature }: { feature: CircleFeature }) {
+export interface FeatureCarouselProps {
+  items: FeatureCarouselItem[];
+  autoPlay?: boolean;
+  interval?: number;
+}
+
+// モバイル用カルーセルアイテム（サークル特集）
+function CircleCarouselItemMobile({ feature }: { feature: CircleFeature }) {
   const circleName = feature.headline
     .replace(/の作品.*$/, "")
     .replace(/特集$/, "")
@@ -34,10 +45,8 @@ function CarouselItem({ feature }: { feature: CircleFeature }) {
               <Users className="h-8 w-8 text-pink-500" />
             </div>
           )}
-          {/* グラデーション */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent" />
-          {/* ラベル */}
           <div
             className="absolute left-2 top-2 rounded-md bg-pink-500 px-2.5 py-1 text-sm font-bold text-white"
             style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.5)" }}
@@ -70,8 +79,67 @@ function CarouselItem({ feature }: { feature: CircleFeature }) {
   );
 }
 
-// PC用グリッドカルーセルアイテム
-function GridCarouselItem({ feature }: { feature: CircleFeature }) {
+// モバイル用カルーセルアイテム（ジャンル特集）
+function GenreCarouselItemMobile({ feature }: { feature: GenreFeature }) {
+  return (
+    <Link href={`/features/genre/${feature.slug}`}>
+      <Card className="h-full overflow-hidden border border-orange-500/30 transition-all hover:border-orange-500/50">
+        <div className="relative aspect-[4/3] overflow-hidden">
+          {feature.thumbnail_url ? (
+            <img
+              src={feature.thumbnail_url}
+              alt=""
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center bg-orange-500/10">
+              <Flame className="h-8 w-8 text-orange-500" />
+            </div>
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent" />
+          <div
+            className="absolute left-2 top-2 rounded-md bg-orange-500 px-2.5 py-1 text-sm font-bold text-white"
+            style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.5)" }}
+          >
+            🔥 性癖特集
+          </div>
+          <div className="absolute bottom-0 left-0 right-0 p-4">
+            <div className="mb-1 flex items-center gap-2">
+              <Flame
+                className="h-5 w-5 text-orange-400"
+                style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.8))" }}
+              />
+              <span
+                className="text-base font-bold text-white"
+                style={{ textShadow: "0 2px 8px rgba(0,0,0,0.9)" }}
+              >
+                {feature.name}特集
+              </span>
+            </div>
+            <p
+              className="line-clamp-2 text-sm font-bold text-white/90"
+              style={{ textShadow: "0 2px 8px rgba(0,0,0,0.9)" }}
+            >
+              {feature.headline}
+            </p>
+          </div>
+        </div>
+      </Card>
+    </Link>
+  );
+}
+
+// モバイル用統一カルーセルアイテム
+function CarouselItem({ item }: { item: FeatureCarouselItem }) {
+  if (item.type === "circle") {
+    return <CircleCarouselItemMobile feature={item.feature} />;
+  }
+  return <GenreCarouselItemMobile feature={item.feature} />;
+}
+
+// PC用グリッドカルーセルアイテム（サークル特集）
+function CircleGridItem({ feature }: { feature: CircleFeature }) {
   const circleName = feature.headline
     .replace(/の作品.*$/, "")
     .replace(/特集$/, "")
@@ -92,10 +160,8 @@ function GridCarouselItem({ feature }: { feature: CircleFeature }) {
               <Users className="h-8 w-8 text-pink-500" />
             </div>
           )}
-          {/* グラデーション */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent" />
-          {/* ラベル */}
           <div
             className="absolute left-2 top-2 rounded-md bg-pink-500 px-2 py-1 text-xs font-bold text-white"
             style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.5)" }}
@@ -122,43 +188,121 @@ function GridCarouselItem({ feature }: { feature: CircleFeature }) {
   );
 }
 
-// モバイル用カルーセル
+// PC用グリッドカルーセルアイテム（ジャンル特集）
+function GenreGridItem({ feature }: { feature: GenreFeature }) {
+  return (
+    <Link href={`/features/genre/${feature.slug}`}>
+      <Card className="group overflow-hidden border border-orange-500/30 transition-all hover:border-orange-500/50">
+        <div className="relative aspect-[4/3] overflow-hidden">
+          {feature.thumbnail_url ? (
+            <img
+              src={feature.thumbnail_url}
+              alt=""
+              className="h-full w-full object-cover transition-transform group-hover:scale-105"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center bg-orange-500/10">
+              <Flame className="h-8 w-8 text-orange-500" />
+            </div>
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent" />
+          <div
+            className="absolute left-2 top-2 rounded-md bg-orange-500 px-2 py-1 text-xs font-bold text-white"
+            style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.5)" }}
+          >
+            🔥 性癖特集
+          </div>
+          <div className="absolute bottom-0 left-0 right-0 p-2">
+            <div className="mb-0.5 flex items-center gap-1">
+              <Flame
+                className="h-3 w-3 text-orange-400"
+                style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.8))" }}
+              />
+              <span
+                className="truncate text-xs font-bold text-white"
+                style={{ textShadow: "0 2px 8px rgba(0,0,0,0.9)" }}
+              >
+                {feature.name}
+              </span>
+            </div>
+          </div>
+        </div>
+      </Card>
+    </Link>
+  );
+}
+
+// PC用統一グリッドカルーセルアイテム
+function GridCarouselItem({ item }: { item: FeatureCarouselItem }) {
+  if (item.type === "circle") {
+    return <CircleGridItem feature={item.feature} />;
+  }
+  return <GenreGridItem feature={item.feature} />;
+}
+
+// カルーセルアイテムのslugを取得するヘルパー
+function getItemSlug(item: FeatureCarouselItem): string {
+  return item.feature.slug;
+}
+
+// モバイル用カルーセル（後方互換）
 export function CircleCarousel({
   features,
   autoPlay = true,
   interval = 5000,
 }: CircleCarouselProps) {
-  const extendedItems =
-    features.length > 1
-      ? [features[features.length - 1], ...features, features[0]]
-      : features;
+  const items: FeatureCarouselItem[] = features.map((f) => ({ type: "circle", feature: f }));
+  return <FeatureCarousel items={items} autoPlay={autoPlay} interval={interval} />;
+}
 
-  const [slideIndex, setSlideIndex] = useState(features.length > 1 ? 1 : 0);
+// PC用グリッドカルーセル（後方互換）
+export function CircleGridCarousel({
+  features,
+  autoPlay = true,
+  interval = 4000,
+}: CircleCarouselProps) {
+  const items: FeatureCarouselItem[] = features.map((f) => ({ type: "circle", feature: f }));
+  return <FeatureGridCarousel items={items} autoPlay={autoPlay} interval={interval} />;
+}
+
+// モバイル用カルーセル（統一型）
+export function FeatureCarousel({
+  items,
+  autoPlay = true,
+  interval = 5000,
+}: FeatureCarouselProps) {
+  const extendedItems =
+    items.length > 1
+      ? [items[items.length - 1], ...items, items[0]]
+      : items;
+
+  const [slideIndex, setSlideIndex] = useState(items.length > 1 ? 1 : 0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const trackRef = useRef<HTMLDivElement>(null);
 
   const displayIndex =
-    features.length > 1
-      ? (slideIndex - 1 + features.length) % features.length
+    items.length > 1
+      ? (slideIndex - 1 + items.length) % items.length
       : 0;
 
   const goToNext = useCallback(() => {
-    if (isTransitioning || features.length <= 1) return;
+    if (isTransitioning || items.length <= 1) return;
     setIsTransitioning(true);
     setSlideIndex((prev) => prev + 1);
-  }, [isTransitioning, features.length]);
+  }, [isTransitioning, items.length]);
 
   const goToPrev = useCallback(() => {
-    if (isTransitioning || features.length <= 1) return;
+    if (isTransitioning || items.length <= 1) return;
     setIsTransitioning(true);
     setSlideIndex((prev) => prev - 1);
-  }, [isTransitioning, features.length]);
+  }, [isTransitioning, items.length]);
 
   const goToIndex = useCallback(
     (targetDisplayIndex: number) => {
-      if (isTransitioning || features.length <= 1) return;
+      if (isTransitioning || items.length <= 1) return;
       if (targetDisplayIndex === displayIndex) return;
 
       setIsTransitioning(true);
@@ -169,7 +313,7 @@ export function CircleCarousel({
         setSlideIndex(targetDisplayIndex + 1);
       }
     },
-    [isTransitioning, features.length, displayIndex]
+    [isTransitioning, items.length, displayIndex]
   );
 
   useEffect(() => {
@@ -181,22 +325,22 @@ export function CircleCarousel({
       if (slideIndex >= extendedItems.length - 1) {
         setSlideIndex(1);
       } else if (slideIndex <= 0) {
-        setSlideIndex(features.length);
+        setSlideIndex(items.length);
       }
     }, 300);
 
     return () => clearTimeout(timer);
-  }, [isTransitioning, slideIndex, extendedItems.length, features.length]);
+  }, [isTransitioning, slideIndex, extendedItems.length, items.length]);
 
   useEffect(() => {
-    if (!autoPlay || features.length <= 1) return;
+    if (!autoPlay || items.length <= 1) return;
 
     const timer = setInterval(() => {
       goToNext();
     }, interval);
 
     return () => clearInterval(timer);
-  }, [autoPlay, interval, features.length, goToNext]);
+  }, [autoPlay, interval, items.length, goToNext]);
 
   const minSwipeDistance = 50;
 
@@ -222,7 +366,7 @@ export function CircleCarousel({
     }
   };
 
-  if (features.length === 0) return null;
+  if (items.length === 0) return null;
 
   return (
     <div className="relative h-full">
@@ -237,18 +381,18 @@ export function CircleCarousel({
           className={`flex ${isTransitioning ? "transition-transform duration-300 ease-out" : ""}`}
           style={{ transform: `translateX(-${slideIndex * 100}%)` }}
         >
-          {extendedItems.map((feature, index) => (
+          {extendedItems.map((item, index) => (
             <div
-              key={`${feature.slug}-${index}`}
+              key={`${getItemSlug(item)}-${index}`}
               className="h-full w-full shrink-0"
             >
-              <CarouselItem feature={feature} />
+              <CarouselItem item={item} />
             </div>
           ))}
         </div>
       </div>
 
-      {features.length > 1 && (
+      {items.length > 1 && (
         <>
           <button
             type="button"
@@ -268,7 +412,7 @@ export function CircleCarousel({
           </button>
 
           <div className="mt-2 flex justify-center gap-1.5">
-            {features.map((_, index) => (
+            {items.map((item, index) => (
               <button
                 type="button"
                 key={index}
@@ -288,39 +432,39 @@ export function CircleCarousel({
   );
 }
 
-// PC用グリッドカルーセル（5カラム表示で1つずつスライド）
-export function CircleGridCarousel({
-  features,
+// PC用グリッドカルーセル（5カラム表示で1つずつスライド、統一型）
+export function FeatureGridCarousel({
+  items,
   autoPlay = true,
   interval = 4000,
-}: CircleCarouselProps) {
+}: FeatureCarouselProps) {
   const visibleCount = 5;
   const cardWidthPercent = 100 / visibleCount;
 
   const extendedItems =
-    features.length > visibleCount
+    items.length > visibleCount
       ? [
-          ...features.slice(-visibleCount),
-          ...features,
-          ...features.slice(0, visibleCount),
+          ...items.slice(-visibleCount),
+          ...items,
+          ...items.slice(0, visibleCount),
         ]
-      : features;
+      : items;
 
-  const initialIndex = features.length > visibleCount ? visibleCount : 0;
+  const initialIndex = items.length > visibleCount ? visibleCount : 0;
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   const goToNext = useCallback(() => {
-    if (isTransitioning || features.length <= visibleCount) return;
+    if (isTransitioning || items.length <= visibleCount) return;
     setIsTransitioning(true);
     setCurrentIndex((prev) => prev + 1);
-  }, [isTransitioning, features.length]);
+  }, [isTransitioning, items.length]);
 
   const goToPrev = useCallback(() => {
-    if (isTransitioning || features.length <= visibleCount) return;
+    if (isTransitioning || items.length <= visibleCount) return;
     setIsTransitioning(true);
     setCurrentIndex((prev) => prev - 1);
-  }, [isTransitioning, features.length]);
+  }, [isTransitioning, items.length]);
 
   useEffect(() => {
     if (!isTransitioning) return;
@@ -328,29 +472,29 @@ export function CircleGridCarousel({
     const timer = setTimeout(() => {
       setIsTransitioning(false);
 
-      if (currentIndex >= features.length + visibleCount) {
+      if (currentIndex >= items.length + visibleCount) {
         setCurrentIndex(visibleCount);
       } else if (currentIndex < visibleCount) {
-        setCurrentIndex(features.length + visibleCount - 1);
+        setCurrentIndex(items.length + visibleCount - 1);
       }
     }, 300);
 
     return () => clearTimeout(timer);
-  }, [isTransitioning, currentIndex, features.length]);
+  }, [isTransitioning, currentIndex, items.length]);
 
   useEffect(() => {
-    if (!autoPlay || features.length <= visibleCount) return;
+    if (!autoPlay || items.length <= visibleCount) return;
 
     const timer = setInterval(() => {
       goToNext();
     }, interval);
 
     return () => clearInterval(timer);
-  }, [autoPlay, interval, features.length, goToNext]);
+  }, [autoPlay, interval, items.length, goToNext]);
 
-  if (features.length === 0) return null;
+  if (items.length === 0) return null;
 
-  const showNavigation = features.length > visibleCount;
+  const showNavigation = items.length > visibleCount;
   const translateX = currentIndex * cardWidthPercent;
 
   return (
@@ -362,13 +506,13 @@ export function CircleGridCarousel({
             transform: `translateX(calc(-${translateX}% - ${(currentIndex * 12) / visibleCount}px))`,
           }}
         >
-          {extendedItems.map((feature, index) => (
+          {extendedItems.map((item, index) => (
             <div
-              key={`${feature.slug}-${index}`}
+              key={`${getItemSlug(item)}-${index}`}
               className="shrink-0"
               style={{ width: `calc((100% - 48px) / 5)` }}
             >
-              <GridCarouselItem feature={feature} />
+              <GridCarouselItem item={item} />
             </div>
           ))}
         </div>

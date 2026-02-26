@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { Sparkles, Trophy, ChevronRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { CircleCarousel, CircleGridCarousel } from "@/components/circle-carousel";
-import type { CircleFeature } from "@/types";
+import { FeatureCarousel, FeatureGridCarousel } from "@/components/circle-carousel";
+import type { FeatureCarouselItem } from "@/components/circle-carousel";
+import type { CircleFeature, GenreFeature } from "@/types";
 
 interface FeaturedBannersProps {
   saleThumbnail?: string | null;
@@ -11,6 +12,7 @@ interface FeaturedBannersProps {
   recommendationThumbnail?: string | null;
   recommendationHeadline?: string | null;
   circleFeatures?: CircleFeature[];
+  genreFeatures?: GenreFeature[];
 }
 
 // 日付を「1/15」形式にフォーマット
@@ -26,6 +28,7 @@ export function FeaturedBanners({
   recommendationThumbnail,
   recommendationHeadline,
   circleFeatures = [],
+  genreFeatures = [],
 }: FeaturedBannersProps) {
   const saleTitle = saleTargetDate
     ? `${formatShortDate(saleTargetDate)}のセール特集`
@@ -37,7 +40,17 @@ export function FeaturedBanners({
 
   const recommendationSubtext = recommendationHeadline || "迷ったらここから選べばハズレなし";
 
-  const hasFeatures = circleFeatures.length > 0;
+  // サークル特集とジャンル特集を交互に混ぜたカルーセルアイテム
+  const carouselItems: FeatureCarouselItem[] = [];
+  const circleItems: FeatureCarouselItem[] = circleFeatures.map((f) => ({ type: "circle", feature: f }));
+  const genreItems: FeatureCarouselItem[] = genreFeatures.map((f) => ({ type: "genre", feature: f }));
+  const maxLen = Math.max(circleItems.length, genreItems.length);
+  for (let i = 0; i < maxLen; i++) {
+    if (i < circleItems.length) carouselItems.push(circleItems[i]);
+    if (i < genreItems.length) carouselItems.push(genreItems[i]);
+  }
+
+  const hasFeatures = carouselItems.length > 0;
 
   return (
     <div className="mb-6 space-y-3 md:space-y-4">
@@ -214,16 +227,16 @@ export function FeaturedBanners({
         </Link>
       </div>
 
-      {/* 下段: サークル特集カルーセル */}
+      {/* 下段: 特集カルーセル（サークル特集 + 性癖特集を交互表示） */}
       {hasFeatures && (
         <>
           {/* スマホ: カルーセル */}
           <div className="md:hidden">
-            <CircleCarousel features={circleFeatures} interval={5000} />
+            <FeatureCarousel items={carouselItems} interval={5000} />
           </div>
           {/* PC: 横スライドカルーセル（5カラム表示） */}
           <div className="hidden md:block">
-            <CircleGridCarousel features={circleFeatures} interval={5000} />
+            <FeatureGridCarousel items={carouselItems} interval={5000} />
           </div>
         </>
       )}

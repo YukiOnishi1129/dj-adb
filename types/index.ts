@@ -85,6 +85,24 @@ export interface DailyRecommendation {
   created_at?: string;
 }
 
+// ジャンル特集内の作品
+export interface GenreFeatureWork extends FeatureWork {
+  page_count: number;
+}
+
+// ジャンル特集
+export interface GenreFeature {
+  id: number;
+  slug: string;
+  name: string;
+  headline: string;
+  description: string;
+  work_count: number;
+  thumbnail_url: string | null;
+  works: GenreFeatureWork[];
+  created_at?: string;
+}
+
 // セール特集（2D-ADB形式）
 export interface SaleFeature {
   id: number;

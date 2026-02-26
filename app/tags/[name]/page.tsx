@@ -1,11 +1,47 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Flame, ChevronRight, Sparkles } from "lucide-react";
 import { Header, Footer } from "@/components/layout";
-import { WorkGrid } from "@/components/work";
+import { WorkGridWithLoadMore } from "@/components/work";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { getWorks } from "@/lib/parquet";
+import { getWorks, getGenreFeatures } from "@/lib/parquet";
+import type { GenreFeature } from "@/types";
+
+// ジャンル特集のタグマッピング（バッチと同じ定義）
+const GENRE_TAG_MAP: Record<string, string[]> = {
+  "fellatio": ["フェラ", "フェラチオ", "口淫"],
+  "big-breasts": ["巨乳", "爆乳", "おっぱい"],
+  "ntr": ["NTR", "寝取り", "寝取られ", "寝取らせ"],
+  "uniform": ["制服", "セーラー服", "ブレザー"],
+  "anal": ["アナル", "肛門", "後ろ"],
+  "virgin": ["処女", "初体験", "初めて"],
+  "school": ["学園", "学校", "スクール"],
+  "paizuri": ["パイズリ", "挟射"],
+  "lovey-dovey": ["ラブラブ", "あまあま", "甘々", "イチャラブ"],
+  "gender-bender": ["性転換", "女体化", "TS", "TSF"],
+  "married-woman": ["人妻", "主婦", "奥さん"],
+  "bukkake": ["ぶっかけ", "顔射", "精液"],
+  "mature": ["熟女", "年上", "おばさん"],
+  "bitch": ["ビッチ", "淫乱", "ヤリマン"],
+  "outdoor": ["野外", "露出", "屋外"],
+  "harem": ["ハーレム", "複数プレイ"],
+  "student": ["学生", "JK", "女子高生"],
+  "masturbation": ["オナニー", "自慰", "ひとりエッチ"],
+  "best-collection": ["ベスト", "総集編", "まとめ"],
+  "pregnancy": ["妊娠", "孕ませ", "中出し", "種付け"],
+  "ass": ["お尻", "ヒップ", "尻"],
+  "tentacle": ["触手", "蠢く"],
+};
+
+// タグ名 → slugの逆引きマップ
+const TAG_TO_SLUG = new Map<string, string>();
+for (const [slug, tags] of Object.entries(GENRE_TAG_MAP)) {
+  for (const tag of tags) {
+    TAG_TO_SLUG.set(tag, slug);
+  }
+}
 
 interface Props {
   params: Promise<{ name: string }>;
@@ -56,10 +92,20 @@ export const dynamicParams = false;
 export default async function TagDetailPage({ params }: Props) {
   const { name } = await params;
   const decodedName = decodeURIComponent(name);
-  const allWorks = await getWorks();
+  const [allWorks, genreFeatures] = await Promise.all([
+    getWorks(),
+    getGenreFeatures(),
+  ]);
 
   // このタグを持つ作品を取得
   const tagWorks = allWorks.filter((w) => w.genre_tags?.includes(decodedName));
+
+  // タグ名に対応するジャンル特集を検索
+  let relatedGenreFeature: GenreFeature | undefined;
+  const matchSlug = TAG_TO_SLUG.get(decodedName);
+  if (matchSlug) {
+    relatedGenreFeature = genreFeatures.find((f) => f.slug === matchSlug);
+  }
 
   if (tagWorks.length === 0) {
     notFound();
@@ -109,6 +155,68 @@ export default async function TagDetailPage({ params }: Props) {
           </CardContent>
         </Card>
 
+        {/* 関連性癖特集バナー */}
+        {relatedGenreFeature && (
+          <div className="mb-6">
+            <Link href={`/features/genre/${relatedGenreFeature.slug}`}>
+              <Card className="overflow-hidden border border-orange-500/30 transition-all hover:border-orange-500/50">
+                {relatedGenreFeature.thumbnail_url ? (
+                  <div className="relative aspect-[21/9] overflow-hidden">
+                    <img
+                      src={relatedGenreFeature.thumbnail_url}
+                      alt=""
+                      className="h-full w-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent" />
+                    <div
+                      className="absolute left-3 top-3 rounded-md bg-orange-500 px-2.5 py-1 text-sm font-bold text-white"
+                      style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.5)" }}
+                    >
+                      🔥 {relatedGenreFeature.name}特集
+                    </div>
+                    <div className="absolute bottom-0 left-0 right-0 p-4">
+                      <div className="mb-1 flex items-center gap-2">
+                        <Flame
+                          className="h-5 w-5 text-orange-400"
+                          style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.8))" }}
+                        />
+                        <span
+                          className="text-base font-bold text-white"
+                          style={{ textShadow: "0 2px 8px rgba(0,0,0,0.9)" }}
+                        >
+                          {relatedGenreFeature.headline}
+                        </span>
+                      </div>
+                      <p
+                        className="line-clamp-2 text-sm text-white/90"
+                        style={{ textShadow: "0 2px 8px rgba(0,0,0,0.9)" }}
+                      >
+                        {relatedGenreFeature.description}
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-4 bg-gradient-to-r from-orange-500/10 to-orange-500/5 p-4">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-orange-500/20">
+                      <Sparkles className="h-6 w-6 text-orange-500" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="mb-1 text-sm font-bold text-orange-500">
+                        🔥 {relatedGenreFeature.name}特集
+                      </div>
+                      <p className="truncate text-sm text-muted-foreground">
+                        {relatedGenreFeature.headline}
+                      </p>
+                    </div>
+                    <ChevronRight className="h-5 w-5 shrink-0 text-orange-500" />
+                  </div>
+                )}
+              </Card>
+            </Link>
+          </div>
+        )}
+
         {/* 関連タグ */}
         {relatedTags.length > 0 && (
           <section className="mb-8">
@@ -128,7 +236,7 @@ export default async function TagDetailPage({ params }: Props) {
 
         {/* 作品一覧 */}
         <h2 className="mb-4 text-lg font-bold text-foreground">作品一覧</h2>
-        <WorkGrid works={sortedWorks} />
+        <WorkGridWithLoadMore works={sortedWorks} initialCount={20} loadMoreCount={20} />
       </main>
 
       <Footer />

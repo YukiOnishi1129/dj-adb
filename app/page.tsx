@@ -11,18 +11,20 @@ import {
   getLatestSaleFeature,
   getCirclesWithWorkCount,
   getCircleFeatures,
+  getGenreFeatures,
 } from "@/lib/parquet";
 
 export const dynamic = "force-static";
 
 export default async function Home() {
-  const [works, dailyRecommendation, saleFeature, circlesWithCount, circleFeatures] =
+  const [works, dailyRecommendation, saleFeature, circlesWithCount, circleFeatures, genreFeatures] =
     await Promise.all([
       getWorks(),
       getLatestDailyRecommendation(),
       getLatestSaleFeature(),
       getCirclesWithWorkCount(),
       getCircleFeatures(),
+      getGenreFeatures(),
     ]);
 
   // ランキング作品（上位12件）
@@ -91,6 +93,7 @@ export default async function Home() {
           recommendationThumbnail={recommendationThumbnail}
           recommendationHeadline={dailyRecommendation?.headline}
           circleFeatures={circleFeatures}
+          genreFeatures={genreFeatures}
         />
 
         {/* トレンドチップ（コンパクト） */}

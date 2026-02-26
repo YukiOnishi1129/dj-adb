@@ -11,6 +11,7 @@ import type {
   Work,
   Circle,
   CircleFeature,
+  GenreFeature,
   DailyRecommendation,
   SaleFeature,
 } from "@/types";
@@ -24,6 +25,7 @@ let circlesCache: Circle[] | null = null;
 let circlesFeaturesCache: CircleFeature[] | null = null;
 let dailyRecommendationsCache: DailyRecommendation[] | null = null;
 let saleFeaturesCache: SaleFeature[] | null = null;
+let genreFeaturesCache: GenreFeature[] | null = null;
 
 /**
  * JSONキャッシュファイルを読み込む
@@ -211,6 +213,29 @@ export async function getLatestSaleFeature(): Promise<SaleFeature | undefined> {
 }
 
 /**
+ * ジャンル特集一覧を取得
+ */
+export async function getGenreFeatures(): Promise<GenreFeature[]> {
+  if (genreFeaturesCache === null) {
+    genreFeaturesCache = loadJson<GenreFeature>("genre_features.json");
+    console.log(
+      `Loaded ${genreFeaturesCache.length} genre features from cache`
+    );
+  }
+  return genreFeaturesCache;
+}
+
+/**
+ * スラッグでジャンル特集を取得
+ */
+export async function getGenreFeatureBySlug(
+  slug: string
+): Promise<GenreFeature | undefined> {
+  const features = await getGenreFeatures();
+  return features.find((f) => f.slug === slug);
+}
+
+/**
  * 同じサークルの他の作品を取得（現在の作品を除く）
  */
 export async function getRelatedWorksByCircle(
@@ -253,6 +278,17 @@ export async function getRelatedWorksByGenre(
     });
 
   return scoredWorks.slice(0, limit).map((item) => item.work);
+}
+
+/**
+ * タグ名でジャンル特集を取得（タグページからの導線用）
+ * ジャンル特集のnameとタグ名が一致するものを返す
+ */
+export async function getGenreFeatureByName(
+  tagName: string
+): Promise<GenreFeature | undefined> {
+  const features = await getGenreFeatures();
+  return features.find((f) => f.name === tagName);
 }
 
 /**
@@ -308,4 +344,5 @@ export function clearCache(): void {
   circlesFeaturesCache = null;
   dailyRecommendationsCache = null;
   saleFeaturesCache = null;
+  genreFeaturesCache = null;
 }
