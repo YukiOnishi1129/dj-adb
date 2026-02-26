@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 import { Header, Footer } from "@/components/layout";
-import { WorkGrid } from "@/components/work";
+import { WorkGridWithLoadMore } from "@/components/work";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { getWorksByCircleName, getAllCircleNames, getCircleFeatureByName } from "@/lib/parquet";
@@ -174,7 +174,7 @@ export default async function CircleDetailPage({ params }: Props) {
 
         {/* 作品一覧 */}
         <h2 className="mb-4 text-lg font-bold text-foreground">作品一覧</h2>
-        <WorkGrid works={sortedWorks} />
+        <WorkGridWithLoadMore works={sortedWorks} initialCount={20} loadMoreCount={20} />
       </main>
 
       <Footer />
