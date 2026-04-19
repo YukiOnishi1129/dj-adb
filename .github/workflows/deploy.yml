@@ -3,13 +3,6 @@ name: Deploy to Shin Rental Server
 on:
   schedule:
     - cron: '30 7 * * *'  # UTC 7:30 = JST 16:30 (Daily Batch完了後、20時Xポスト前)
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - 'docs/**'
-      - '**/*.md'
-      - '.github/workflows/retry-deploy.yml'
   workflow_dispatch:
 
 jobs:
