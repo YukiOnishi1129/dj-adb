@@ -19,6 +19,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "サークル一覧 | DJ-ADB",
   description: "同人コミック・CGを手掛けるサークル一覧。お気に入りのサークルを見つけよう。",
+  alternates: { canonical: "/circles/" },
 };
 
 export default async function CirclesPage() {

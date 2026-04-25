@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 import { MobileNav } from "@/components/mobile-nav";
+import { WebsiteJsonLd } from "@/components/json-ld";
 import "./globals.css";
 
 const GA_MEASUREMENT_ID = "G-CW6YS7PYBW";
@@ -17,6 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://dj-adb.com"),
   title: {
     default: "DJ-ADB | 同人コミック・CGデータベース",
     template: "%s | DJ-ADB",
@@ -88,6 +90,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <WebsiteJsonLd
+          url="https://dj-adb.com"
+          name="DJ-ADB"
+          description="同人コミック・CGの最新ランキング、セール情報、おすすめ作品を毎日更新。FANZAの人気作品をチェック！"
+        />
         {children}
         <MobileNav />
         {/* モバイルナビの高さ分の余白 */}

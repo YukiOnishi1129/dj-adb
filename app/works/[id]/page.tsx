@@ -52,6 +52,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${salePrefix}${work.title} レビュー・感想 | DJ-ADB`,
     description,
+    alternates: { canonical: `/works/${work.id}/` },
     openGraph: {
       images: work.thumbnail_url ? [work.thumbnail_url] : [],
     },

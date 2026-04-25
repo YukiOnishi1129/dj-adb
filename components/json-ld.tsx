@@ -5,6 +5,29 @@ interface BreadcrumbItem {
   href?: string;
 }
 
+interface WebsiteJsonLdProps {
+  url: string;
+  name: string;
+  description: string;
+}
+
+export function WebsiteJsonLd({ url, name, description }: WebsiteJsonLdProps) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name,
+    description,
+    url,
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  );
+}
+
 interface ProductJsonLdProps {
   work: Work;
 }

@@ -8,6 +8,7 @@ import { getWorks } from "@/lib/parquet";
 export const metadata: Metadata = {
   title: "タグ一覧 | DJ-ADB",
   description: "同人コミック・CG集のタグ一覧。ジャンルから作品を探せます。",
+  alternates: { canonical: "/tags/" },
 };
 
 export const dynamic = "force-static";

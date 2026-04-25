@@ -8,6 +8,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "作品一覧",
   description: "同人コミック・CGの作品一覧。ランキング順に表示。",
+  alternates: { canonical: "/works/" },
 };
 
 export const dynamic = "force-static";

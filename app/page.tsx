@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Header, Footer } from "@/components/layout";
 import { HorizontalScrollSection } from "@/components/horizontal-scroll-section";
@@ -7,6 +8,10 @@ import { isDoujinFestivalActive, getDoujinFestivalAffiliateUrl, CAMPAIGN_END_ISO
 import { FeaturedBanners } from "@/components/featured-banners";
 import { TrendingChips } from "@/components/trending-chips";
 import { Badge } from "@/components/ui/badge";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 import {
   getWorks,
   getLatestDailyRecommendation,
