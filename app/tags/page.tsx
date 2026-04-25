@@ -6,8 +6,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { getWorks } from "@/lib/parquet";
 
 export const metadata: Metadata = {
-  title: "タグ一覧 | DJ-ADB",
-  description: "同人コミック・CG集のタグ一覧。ジャンルから作品を探せます。",
+  title: "タグ一覧",
+  description: "同人コミック・CG集のジャンル別タグ一覧。フェラ・巨乳・人妻・NTRなど人気ジャンルから作品を検索。FANZAで人気の同人作品をジャンル別にレビュー・感想と一緒にチェック。",
   alternates: { canonical: "/tags/" },
 };
 

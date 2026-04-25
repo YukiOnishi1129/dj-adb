@@ -113,13 +113,13 @@ export default async function WorkDetailPage({ params }: Props) {
   const fanzaUrl = getFanzaUrl(work.fanza_content_id);
   const displayPrice = isOnSale ? work.sale_price! : work.price;
 
-  // 関連データを取得
+  // 関連データを取得（SEO: 内部リンク密度を上げるため、各セクション8件）
   const [circleWorks, relatedWorks, circleFeature, allCircleFeatures, recommendedWorks] = await Promise.all([
-    getRelatedWorksByCircle(work.circle_name, work.id, 4),
-    getRelatedWorksByGenre(work.genre_tags || [], work.id, 4),
+    getRelatedWorksByCircle(work.circle_name, work.id, 8),
+    getRelatedWorksByGenre(work.genre_tags || [], work.id, 8),
     getCircleFeatureByName(work.circle_name),
     getCircleFeatures(),
-    getRecommendedWorks(work.id, 4),
+    getRecommendedWorks(work.id, 8),
   ]);
 
   const breadcrumbItems = [
@@ -167,7 +167,7 @@ export default async function WorkDetailPage({ params }: Props) {
               work.thumbnail_url ||
               "https://placehold.co/800x450/f4f4f5/71717a?text=No+Image"
             }
-            alt={work.title}
+            alt={`${work.title}${work.circle_name ? ` - ${work.circle_name}` : ""}${work.genre_tags && work.genre_tags.length > 0 ? `（${work.genre_tags.slice(0, 3).join("・")}）` : ""}の同人コミック・CGサムネイル`}
             className="w-full max-h-[500px] object-contain bg-black/5"
           />
           {/* Ranking badge */}

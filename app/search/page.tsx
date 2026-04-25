@@ -9,8 +9,8 @@ import {
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "作品検索",
-  description: "同人コミック・CG作品を検索。タイトル、作者、サークル、タグで絞り込み。",
+  title: "作品検索 - 同人コミック・CG",
+  description: "FANZA同人コミック・CG作品をキーワード・サークル・タグ・価格・評価で絞り込み検索。フェラ・巨乳・NTR・触手など人気ジャンル別、無料セール・お買い得作品も検索可能。レビュー・感想・抜きどころも掲載。",
   alternates: { canonical: "/search/" },
 };
 

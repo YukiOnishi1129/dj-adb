@@ -6,9 +6,9 @@ import { getGenreFeatures } from "@/lib/parquet";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "性癖特集",
+  title: "性癖・ジャンル別特集一覧 - 同人コミック・CG",
   description:
-    "性癖別の同人コミック・CG集を厳選して特集。フェラ、巨乳、NTR、制服など人気ジャンルのおすすめ作品をご紹介。",
+    "FANZA同人コミック・CGを性癖・ジャンル別に厳選特集。フェラ、巨乳、NTR、制服、人妻、触手、ハーレムなど人気ジャンルのおすすめ作品をランキング形式でご紹介。レビュー・感想・抜きどころも掲載。",
   alternates: { canonical: "/features/genre/" },
 };
 

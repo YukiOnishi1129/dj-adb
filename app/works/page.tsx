@@ -6,8 +6,8 @@ import { getWorks, getCircleFeatures, getLatestSaleFeature } from "@/lib/parquet
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "作品一覧",
-  description: "同人コミック・CGの作品一覧。ランキング順に表示。",
+  title: "同人コミック・CG作品一覧 - FANZAランキング順",
+  description: "FANZA同人コミック・CG作品をランキング順に一覧表示。最新作から定番の人気作まで、評価・レビュー数・価格を確認しながら選べます。フェラ・巨乳・人妻・NTR・触手・ハーレムなど人気ジャンルを網羅。",
   alternates: { canonical: "/works/" },
 };
 

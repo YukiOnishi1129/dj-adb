@@ -17,8 +17,8 @@ import type { Metadata } from "next";
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: "サークル一覧 | DJ-ADB",
-  description: "同人コミック・CGを手掛けるサークル一覧。お気に入りのサークルを見つけよう。",
+  title: "サークル一覧",
+  description: "FANZA同人コミック・CGを手掛ける人気サークル一覧。作品数・評価別に並び替え可能。お気に入りのサークルを見つけて、最新作・代表作のレビュー・感想・抜きどころを毎日チェック。",
   alternates: { canonical: "/circles/" },
 };
 

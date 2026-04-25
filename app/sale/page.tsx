@@ -11,12 +11,12 @@ import {
 import { Flame } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "セール中の作品一覧 | DJ-ADB",
-  description: "今お得に買える同人コミック・CG作品をまとめてチェック。割引率・価格順で並び替え可能。",
+  title: "セール中の同人コミック・CG作品一覧",
+  description: "今お得に買えるFANZA同人コミック・CG作品を厳選レビュー。割引率・価格順で並び替え可能。最大80%OFFの大型セール作品から、500円以下のお買い得作品までまとめてチェック。レビュー・感想・抜きどころも掲載。",
   alternates: { canonical: "/sale/" },
   openGraph: {
-    title: "セール中の作品一覧 | DJ-ADB",
-    description: "今お得に買える同人コミック・CG作品をまとめてチェック。",
+    title: "セール中の同人コミック・CG作品一覧",
+    description: "今お得に買えるFANZA同人コミック・CG作品をまとめてチェック。",
     type: "website",
   },
 };

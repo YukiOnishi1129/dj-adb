@@ -7,8 +7,8 @@ import { formatRating } from "@/lib/utils";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "サークル特集",
-  description: "注目サークルの作品を特集！人気サークルの魅力をご紹介。",
+  title: "サークル特集一覧 - 同人コミック・CG",
+  description: "FANZA同人コミック・CGの注目サークル特集を一覧で紹介。人気サークルの代表作・最新作・おすすめ作品をピックアップ。サークルごとの作風・魅力・評価をレビュー付きで毎日更新。",
   alternates: { canonical: "/features/circle/" },
 };
 

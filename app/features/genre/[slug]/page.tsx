@@ -40,10 +40,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: "性癖特集が見つかりません" };
   }
 
-  const title = `${feature.name}特集 - おすすめ同人コミックレビュー厳選${feature.works.length}作品 | DJ-ADB`;
-  const description =
-    feature.description ||
-    `${feature.name}の人気同人コミック・CG集を厳選。迷ったらここから選べばハズレなし。`;
+  const year = new Date().getFullYear();
+  // layout.tsx の template: "%s | DJ-ADB" が自動付与される
+  const title = `【${year}年最新】${feature.name}の同人コミック・CGおすすめ${feature.works.length}選 レビュー・感想・セール情報`;
+  const headlineText = feature.headline ? `${feature.headline}。` : "";
+  const description = `${feature.name}ジャンルの人気同人コミック・CG${feature.works.length}作品を厳選レビュー特集。${headlineText}${feature.description || ""}FANZAで評価の高い${feature.name}作品の評価・あらすじ・抜きどころを毎日更新。`.slice(0, 160);
 
   return {
     title,

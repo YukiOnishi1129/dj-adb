@@ -81,7 +81,7 @@ export const WorkCard = memo(function WorkCard({
               work.thumbnail_url ||
               "https://placehold.co/300x400/f4f4f5/71717a?text=No+Image"
             }
-            alt={work.title}
+            alt={`${work.title}${work.circle_name ? ` - ${work.circle_name}` : ""}${work.genre_tags && work.genre_tags.length > 0 ? `（${work.genre_tags.slice(0, 3).join("・")}）` : ""}の同人コミック・CG`}
             loading="lazy"
             onError={(e) => {
               e.currentTarget.src =
