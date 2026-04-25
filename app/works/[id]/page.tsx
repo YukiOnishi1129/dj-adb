@@ -63,22 +63,33 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // layout.tsx の template: "%s | DJ-ADB" が自動付与されるので末尾の "| DJ-ADB" は省略
   const pageTitle = `${salePrefix}${cleanTitle}${titleSuffix}`;
 
-  // SEO重視のdescription: 価格・評価・サークル・ジャンル・ページ数 + ai_summary 抜粋を150〜160字に圧縮
-  const ratingText = work.rating ? `★${work.rating.toFixed(1)}（レビュー${work.review_count || 0}件）` : "";
+  // SEO重視のdescription:
+  // 検索結果（SERP）に表示される冒頭60文字でユーザーが「何の作品か」即理解できるよう、
+  // 順番は: ①作品の本質（サークル+ジャンル+作品種別） → ②本文（ai_appeal_points） → ③評価/価格/ページ数（詳細）
+  const ratingText = work.rating ? `★${work.rating.toFixed(1)}（${work.review_count || 0}件）` : "";
   const priceText = isOnSale && work.sale_price
-    ? `${work.discount_rate}%OFF：${work.price.toLocaleString()}円→${work.sale_price.toLocaleString()}円`
+    ? `${work.discount_rate}%OFF ${work.sale_price.toLocaleString()}円`
     : work.price ? `${work.price.toLocaleString()}円` : "";
   const pageInfo = work.page_count ? `${work.page_count}P` : "";
+  const detailParts = [ratingText, priceText, pageInfo].filter(Boolean).join("｜");
+
+  // 冒頭60文字に詰める核心情報: 「{サークル名}の{ジャンル}同人コミック・CG」
   const genreInfo = topGenres.length > 0 ? `${topGenres.join("・")}` : "";
-  const metaParts = [ratingText, priceText, pageInfo, genreInfo].filter(Boolean).join("｜");
+  const leadCore = work.circle_name && genreInfo
+    ? `${work.circle_name}の${genreInfo}同人コミック・CGレビュー。`
+    : work.circle_name
+    ? `${work.circle_name}の同人コミック・CGレビュー。`
+    : `同人コミック・CG作品レビュー。`;
 
   // 本文（ai_appeal_points or ai_summary）を残り文字数に応じて抜粋
-  const baseBody = work.ai_appeal_points || work.ai_summary || `${work.circle_name}の作品。`;
-  const remaining = Math.max(0, 155 - metaParts.length - 4); // 4 = " 〜 "セパレータ等
+  const baseBody = work.ai_appeal_points || work.ai_summary || "";
+  const usedBeforeBody = leadCore.length;
+  const reservedAfterBody = detailParts.length + 1; // "｜" 区切り
+  const remaining = Math.max(0, 158 - usedBeforeBody - reservedAfterBody);
   const trimmedBody = baseBody.length > remaining
     ? baseBody.slice(0, Math.max(0, remaining - 1)) + "…"
     : baseBody;
-  const description = metaParts ? `${metaParts}｜${trimmedBody}` : trimmedBody;
+  const description = [leadCore + trimmedBody, detailParts].filter(Boolean).join("｜");
 
   return {
     title: pageTitle,
@@ -414,10 +425,10 @@ export default async function WorkDetailPage({ params }: Props) {
 
           {/* AI Summary */}
           {work.ai_summary && (
-            <Card className="bg-secondary/50">
+            <Card id="summary" className="bg-secondary/50">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
-                  あらすじ
+                <CardTitle asChild className="text-sm font-medium text-muted-foreground">
+                  <h2>あらすじ</h2>
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -428,10 +439,10 @@ export default async function WorkDetailPage({ params }: Props) {
 
           {/* こんな人におすすめ */}
           {work.ai_target_audience && (
-            <Card className="bg-emerald-50 dark:bg-emerald-950 border-emerald-200 dark:border-emerald-800">
+            <Card id="target-audience" className="bg-emerald-50 dark:bg-emerald-950 border-emerald-200 dark:border-emerald-800">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-bold text-gray-900 dark:text-gray-100">
-                  🎯 こんな人におすすめ
+                <CardTitle asChild className="text-sm font-bold text-gray-900 dark:text-gray-100">
+                  <h2>🎯 こんな人におすすめ</h2>
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -444,10 +455,10 @@ export default async function WorkDetailPage({ params }: Props) {
 
           {/* おすすめポイント */}
           {work.ai_appeal_points && (
-            <Card className="bg-amber-50 dark:bg-amber-950 border-amber-200 dark:border-amber-800">
+            <Card id="appeal-points" className="bg-amber-50 dark:bg-amber-950 border-amber-200 dark:border-amber-800">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-bold text-gray-900 dark:text-gray-100">
-                  ✨ これが刺さる！
+                <CardTitle asChild className="text-sm font-bold text-gray-900 dark:text-gray-100">
+                  <h2>✨ これが刺さる！</h2>
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -460,10 +471,10 @@ export default async function WorkDetailPage({ params }: Props) {
 
           {/* 注意点 */}
           {work.ai_warnings && (
-            <Card className="bg-rose-50 dark:bg-rose-950 border-rose-200 dark:border-rose-800">
+            <Card id="warnings" className="bg-rose-50 dark:bg-rose-950 border-rose-200 dark:border-rose-800">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-bold text-gray-900 dark:text-gray-100">
-                  ⚠️ 注意点
+                <CardTitle asChild className="text-sm font-bold text-gray-900 dark:text-gray-100">
+                  <h2>⚠️ 注意点</h2>
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -476,10 +487,10 @@ export default async function WorkDetailPage({ params }: Props) {
 
           {/* 編集部レビュー */}
           {work.ai_review && (
-            <Card className="bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-950 dark:to-indigo-950 border-purple-200 dark:border-purple-800">
+            <Card id="review" className="bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-950 dark:to-indigo-950 border-purple-200 dark:border-purple-800">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-bold text-gray-900 dark:text-gray-100">
-                  📝 DJ-ADB編集部レビュー
+                <CardTitle asChild className="text-sm font-bold text-gray-900 dark:text-gray-100">
+                  <h2>📝 DJ-ADB編集部レビュー</h2>
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -805,7 +816,7 @@ export default async function WorkDetailPage({ params }: Props) {
           {/* サークル特集ページへのリンク */}
           {circleFeature && (
             <div className="space-y-3">
-              <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
+              <h2 id="circle-feature" className="text-lg font-bold text-foreground flex items-center gap-2">
                 <span className="text-pink-500">🎨</span>
                 {work.circle_name}の特集ページ
               </h2>
@@ -839,8 +850,8 @@ export default async function WorkDetailPage({ params }: Props) {
 
           {/* 同じサークルの他の作品 */}
           {circleWorks.length > 0 && (
-            <section className="mt-8 space-y-4">
-              <h2 className="text-lg font-bold text-foreground">
+            <section id="circle-works" className="mt-8 space-y-4">
+              <h2 id="circle-works-heading" className="text-lg font-bold text-foreground">
                 🎨 {work.circle_name}の他の人気作品
               </h2>
               <WorkGrid works={circleWorks} columns={2} />
@@ -849,8 +860,8 @@ export default async function WorkDetailPage({ params }: Props) {
 
           {/* この作品が好きな人はこれも（タグベース） */}
           {relatedWorks.length > 0 && (
-            <section className="mt-8 space-y-4">
-              <h2 className="text-lg font-bold text-foreground">
+            <section id="related-works" className="mt-8 space-y-4">
+              <h2 id="related-works-heading" className="text-lg font-bold text-foreground">
                 🛒 この作品が好きな人はこれも
               </h2>
               <WorkGrid works={relatedWorks} columns={2} />
@@ -859,8 +870,8 @@ export default async function WorkDetailPage({ params }: Props) {
 
           {/* こちらもおすすめ */}
           {recommendedWorks.length > 0 && (
-            <section className="mt-10 space-y-4">
-              <h2 className="text-lg font-bold text-foreground">
+            <section id="recommended-works" className="mt-10 space-y-4">
+              <h2 id="recommended-works-heading" className="text-lg font-bold text-foreground">
                 こちらもおすすめ
               </h2>
               <WorkGrid works={recommendedWorks} columns={2} />
@@ -869,8 +880,8 @@ export default async function WorkDetailPage({ params }: Props) {
 
           {/* 人気サークル特集 */}
           {allCircleFeatures.length > 0 && (
-            <section className="mt-10 space-y-3">
-              <h2 className="text-lg font-bold text-foreground">🎨 人気サークル特集</h2>
+            <section id="popular-circle-features" className="mt-10 space-y-3">
+              <h2 id="popular-circle-features-heading" className="text-lg font-bold text-foreground">🎨 人気サークル特集</h2>
               <div className="grid gap-3 md:grid-cols-3">
                 {allCircleFeatures.slice(0, 6).map((feature) => (
                   <Link key={feature.slug} href={`/features/circle/${feature.slug}`}>

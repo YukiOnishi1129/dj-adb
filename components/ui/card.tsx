@@ -30,14 +30,28 @@ CardHeader.displayName = "CardHeader";
 
 const CardTitle = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn("font-semibold leading-none tracking-tight", className)}
-    {...props}
-  />
-));
+  React.HTMLAttributes<HTMLDivElement> & { asChild?: boolean }
+>(({ className, asChild = false, children, ...props }, ref) => {
+  const mergedClassName = cn("font-semibold leading-none tracking-tight", className);
+  // asChild: 子要素（h2 等）にスタイルとrefをマージし、divラップを外す（SEOで見出しタグを使うため）
+  if (asChild && React.isValidElement(children)) {
+    const child = children as React.ReactElement<{ className?: string }>;
+    return React.cloneElement(child, {
+      ...props,
+      ref,
+      className: cn(mergedClassName, child.props.className),
+    } as React.HTMLAttributes<HTMLElement> & { ref: React.Ref<HTMLDivElement> });
+  }
+  return (
+    <div
+      ref={ref}
+      className={mergedClassName}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+});
 CardTitle.displayName = "CardTitle";
 
 const CardDescription = React.forwardRef<
