@@ -3,7 +3,7 @@ import { Header, Footer } from "@/components/layout";
 import { HorizontalScrollSection } from "@/components/horizontal-scroll-section";
 import { HeroSaleBanner } from "@/components/hero-sale-banner";
 import { CampaignBanner } from "@/components/campaign-banner";
-import { isDoujinFestivalActive, getDoujinFestivalAffiliateUrl } from "@/lib/doujin-festival-campaign";
+import { isDoujinFestivalActive, getDoujinFestivalAffiliateUrl, CAMPAIGN_END_ISO as DOUJIN_FESTIVAL_END } from "@/lib/doujin-festival-campaign";
 import { FeaturedBanners } from "@/components/featured-banners";
 import { TrendingChips } from "@/components/trending-chips";
 import { Badge } from "@/components/ui/badge";
@@ -94,6 +94,7 @@ export default async function Home() {
             title="FANZA春の同人祭 開催中！"
             description="人気作品50%OFF・ゲーム300円・同人祭限定クーポンなど多数"
             ctaLabel="特集を見る →"
+            endDate={DOUJIN_FESTIVAL_END}
           />
         )}
 
