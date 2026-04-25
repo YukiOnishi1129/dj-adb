@@ -422,10 +422,18 @@ export default async function WorkDetailPage({ params }: Props) {
                   📝 DJ-ADB編集部レビュー
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <p className="text-gray-800 dark:text-gray-200 leading-relaxed">
-                  {work.ai_review}
-                </p>
+              <CardContent className="space-y-3">
+                {work.ai_review
+                  .split(/\n\n+/)
+                  .filter((paragraph) => paragraph.trim().length > 0)
+                  .map((paragraph, idx) => (
+                    <p
+                      key={idx}
+                      className="text-gray-800 dark:text-gray-200 leading-relaxed"
+                    >
+                      {paragraph.trim()}
+                    </p>
+                  ))}
               </CardContent>
             </Card>
           )}
