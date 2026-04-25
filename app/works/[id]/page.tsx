@@ -31,6 +31,17 @@ interface Props {
   params: Promise<{ id: string }>;
 }
 
+// FANZAタイトルから割引文字列等のノイズを除去（SEO用にクリーンなタイトルにする）
+function sanitizeTitleForSeo(rawTitle: string): string {
+  if (!rawTitle) return "";
+  let cleaned = rawTitle;
+  // 「【XX%OFFセール】」「【YY/MM/DD HH:MMまで】」「【○○弾】」などの割引・期限ラベルを除去
+  cleaned = cleaned.replace(/【[^】]*(?:OFF|まで|セール|キャンペーン|期間限定|弾|割引)[^】]*】/g, "");
+  // 連続する空白や記号の整理
+  cleaned = cleaned.replace(/\s+/g, " ").trim();
+  return cleaned;
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const work = await getWorkById(parseInt(id, 10));
@@ -40,20 +51,42 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const isOnSale = work.sale_price !== null && work.sale_price < work.price;
-  const salePrefix = isOnSale ? `【${work.discount_rate}%OFF】` : "";
+  const cleanTitle = sanitizeTitleForSeo(work.title) || work.title;
 
-  const ratingText = work.rating ? `★${work.rating.toFixed(1)}` : "";
-  const saleText = isOnSale ? `${work.discount_rate}%OFF セール中` : "";
-  const leadParts = [ratingText, saleText].filter(Boolean).join("／");
-  const leadPrefix = leadParts ? `${leadParts}｜` : "";
-  const baseDesc = work.ai_appeal_points || work.ai_summary || `${work.circle_name}の作品「${work.title}」`;
-  const description = `${leadPrefix}${baseDesc}`;
+  // SEO重視のタイトル: 「作品名｜サークル名・ジャンル1・ジャンル2のレビュー・感想 | DJ-ADB」
+  const topGenres = (work.genre_tags || []).slice(0, 2);
+  const titleParts: string[] = [];
+  if (work.circle_name) titleParts.push(work.circle_name);
+  titleParts.push(...topGenres);
+  const titleSuffix = titleParts.length > 0 ? `｜${titleParts.join("・")}のレビュー・感想` : "｜レビュー・感想";
+  const salePrefix = isOnSale ? `【${work.discount_rate}%OFF】` : "";
+  // layout.tsx の template: "%s | DJ-ADB" が自動付与されるので末尾の "| DJ-ADB" は省略
+  const pageTitle = `${salePrefix}${cleanTitle}${titleSuffix}`;
+
+  // SEO重視のdescription: 価格・評価・サークル・ジャンル・ページ数 + ai_summary 抜粋を150〜160字に圧縮
+  const ratingText = work.rating ? `★${work.rating.toFixed(1)}（レビュー${work.review_count || 0}件）` : "";
+  const priceText = isOnSale && work.sale_price
+    ? `${work.discount_rate}%OFF：${work.price.toLocaleString()}円→${work.sale_price.toLocaleString()}円`
+    : work.price ? `${work.price.toLocaleString()}円` : "";
+  const pageInfo = work.page_count ? `${work.page_count}P` : "";
+  const genreInfo = topGenres.length > 0 ? `${topGenres.join("・")}` : "";
+  const metaParts = [ratingText, priceText, pageInfo, genreInfo].filter(Boolean).join("｜");
+
+  // 本文（ai_appeal_points or ai_summary）を残り文字数に応じて抜粋
+  const baseBody = work.ai_appeal_points || work.ai_summary || `${work.circle_name}の作品。`;
+  const remaining = Math.max(0, 155 - metaParts.length - 4); // 4 = " 〜 "セパレータ等
+  const trimmedBody = baseBody.length > remaining
+    ? baseBody.slice(0, Math.max(0, remaining - 1)) + "…"
+    : baseBody;
+  const description = metaParts ? `${metaParts}｜${trimmedBody}` : trimmedBody;
 
   return {
-    title: `${salePrefix}${work.title} レビュー・感想 | DJ-ADB`,
+    title: pageTitle,
     description,
     alternates: { canonical: `/works/${work.id}/` },
     openGraph: {
+      title: cleanTitle,
+      description,
       images: work.thumbnail_url ? [work.thumbnail_url] : [],
     },
   };
@@ -202,6 +235,33 @@ export default async function WorkDetailPage({ params }: Props) {
           <h1 className="text-2xl md:text-3xl font-bold text-foreground">
             {work.title}
           </h1>
+
+          {/* SEO重視のリード文（h1直下にキーワード詰め込み、ユーザーにも有用な情報サマリ） */}
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            <span className="font-semibold text-foreground">{work.circle_name}</span>
+            {work.author_name && <>（{work.author_name}）</>}
+            による同人コミック・CG作品
+            {work.page_count ? `（${work.page_count}ページ）` : ""}
+            のレビュー・感想ページ。
+            {work.genre_tags && work.genre_tags.length > 0 && (
+              <>
+                ジャンルは
+                <span className="text-foreground">
+                  {work.genre_tags.slice(0, 5).join("・")}
+                </span>
+                。
+              </>
+            )}
+            {work.rating && work.review_count ? (
+              <>
+                FANZAでの評価は
+                <span className="font-semibold text-foreground">
+                  ★{work.rating.toFixed(1)}（レビュー{work.review_count}件）
+                </span>
+                。
+              </>
+            ) : null}
+          </p>
 
           {/* サークル */}
           <div className="text-muted-foreground">
