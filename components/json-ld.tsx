@@ -32,9 +32,16 @@ interface ProductJsonLdProps {
   work: Work;
 }
 
+// ビルド時の日時を ISO 8601 形式で取得（schema.org の dateModified に使用）
+// 価格・セール情報を毎日更新しているサイトであることを Google に伝える
+function getBuildDateIso(): string {
+  return new Date().toISOString();
+}
+
 export function ProductJsonLd({ work }: ProductJsonLdProps) {
   const isOnSale = work.sale_price !== null && work.sale_price < work.price;
   const displayPrice = isOnSale ? work.sale_price! : work.price;
+  const buildDate = getBuildDateIso();
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -49,6 +56,8 @@ export function ProductJsonLd({ work }: ProductJsonLdProps) {
         }
       : undefined,
     category: "同人漫画",
+    // 最終更新日（ビルド毎に自動更新、Google に「アクティブに更新中のサイト」と伝える）
+    dateModified: work.updated_at || buildDate,
     offers: {
       "@type": "AggregateOffer",
       priceCurrency: "JPY",
@@ -56,6 +65,8 @@ export function ProductJsonLd({ work }: ProductJsonLdProps) {
       highPrice: work.price,
       offerCount: 1,
       availability: "https://schema.org/InStock",
+      // セール終了日が設定されていれば priceValidUntil として伝える
+      ...(isOnSale && work.sale_end_date && { priceValidUntil: work.sale_end_date }),
     },
     ...(work.rating &&
       work.review_count && {
@@ -82,6 +93,8 @@ export function ReviewJsonLd({ work }: ProductJsonLdProps) {
 
   if (!reviewBody) return null;
 
+  const buildDate = getBuildDateIso();
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Review",
@@ -95,6 +108,9 @@ export function ReviewJsonLd({ work }: ProductJsonLdProps) {
       name: "DJ-ADB",
     },
     reviewBody: reviewBody,
+    // レビューの公開日 / 最終更新日（毎日のビルドで更新される）
+    datePublished: work.updated_at || buildDate,
+    dateModified: work.updated_at || buildDate,
   };
 
   return (

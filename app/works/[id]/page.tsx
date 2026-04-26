@@ -242,9 +242,18 @@ export default async function WorkDetailPage({ params }: Props) {
             </div>
           )}
 
-          {/* タイトル */}
+          {/* タイトル（h1: 検索エンジンへの主要キーワード集約。サブタイトルは sr-only ではなく可視で表示） */}
           <h1 className="text-2xl md:text-3xl font-bold text-foreground">
             {work.title}
+            {(work.circle_name || (work.genre_tags && work.genre_tags.length > 0)) && (
+              <span className="block mt-1 text-sm md:text-base font-normal text-muted-foreground">
+                {work.circle_name ? `${work.circle_name}` : ""}
+                {work.genre_tags && work.genre_tags.length > 0
+                  ? `${work.circle_name ? "の" : ""}${work.genre_tags.slice(0, 2).join("・")}同人コミック・CG`
+                  : "の同人コミック・CG"}
+                レビュー・感想
+              </span>
+            )}
           </h1>
 
           {/* SEO重視のリード文（h1直下にキーワード詰め込み、ユーザーにも有用な情報サマリ） */}
