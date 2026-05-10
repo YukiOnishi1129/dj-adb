@@ -70,6 +70,17 @@ export default function NotFound() {
                 </CardContent>
               </Card>
             </Link>
+            <Link href="/authors">
+              <Card className="hover:border-blue-500/50 transition-all">
+                <CardContent className="flex items-center gap-3 p-4">
+                  <span className="text-2xl shrink-0">✍️</span>
+                  <div>
+                    <div className="text-sm font-bold text-foreground">作家一覧</div>
+                    <div className="text-xs text-muted-foreground">人気作家から探す</div>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
             <Link href="/tags">
               <Card className="hover:border-blue-500/50 transition-all">
                 <CardContent className="flex items-center gap-3 p-4">
@@ -87,7 +98,7 @@ export default function NotFound() {
         {/* 特集ページへの誘導 */}
         <section className="mt-8">
           <h2 className="mb-4 text-lg font-bold text-foreground">人気の特集</h2>
-          <div className="grid gap-3 md:grid-cols-3">
+          <div className="grid gap-3 md:grid-cols-3 lg:grid-cols-5">
             <Link href="/features/daily">
               <Card className="hover:border-pink-500/50 transition-all">
                 <CardContent className="p-4">
@@ -109,6 +120,22 @@ export default function NotFound() {
                 <CardContent className="p-4">
                   <div className="text-sm font-bold text-foreground">🎯 性癖・ジャンル特集</div>
                   <div className="mt-1 text-xs text-muted-foreground">巨乳・人妻・NTRなど</div>
+                </CardContent>
+              </Card>
+            </Link>
+            <Link href="/features/circle">
+              <Card className="hover:border-pink-500/50 transition-all">
+                <CardContent className="p-4">
+                  <div className="text-sm font-bold text-foreground">🎨 サークル特集</div>
+                  <div className="mt-1 text-xs text-muted-foreground">人気サークルの代表作</div>
+                </CardContent>
+              </Card>
+            </Link>
+            <Link href="/features/author">
+              <Card className="hover:border-blue-500/50 transition-all">
+                <CardContent className="p-4">
+                  <div className="text-sm font-bold text-foreground">✍️ 作家特集</div>
+                  <div className="mt-1 text-xs text-muted-foreground">人気作家の代表作</div>
                 </CardContent>
               </Card>
             </Link>

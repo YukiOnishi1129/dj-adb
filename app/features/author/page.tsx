@@ -1,0 +1,100 @@
+import Link from "next/link";
+import Image from "next/image";
+import { Star, FileText } from "lucide-react";
+import { Header, Footer } from "@/components/layout";
+import { getAuthorFeatures } from "@/lib/parquet";
+import { formatRating } from "@/lib/utils";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "作家特集一覧 - 同人コミック・CG",
+  description: "FANZA同人コミック・CGの注目作家特集を一覧で紹介。サークル横断で活動する人気作家の代表作・最新作・おすすめ作品をピックアップ。作家ごとの作風・魅力・評価をレビュー付きで毎日更新。",
+  alternates: { canonical: "/features/author/" },
+};
+
+export const dynamic = "force-static";
+
+export default async function AuthorFeaturePage() {
+  const features = await getAuthorFeatures();
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Header />
+
+      <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
+        {/* Breadcrumb */}
+        <nav className="mb-6 text-sm text-muted-foreground">
+          <Link href="/" className="hover:text-foreground">
+            トップ
+          </Link>
+          <span className="mx-2">/</span>
+          <span className="text-foreground">作家特集</span>
+        </nav>
+
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-2xl font-bold text-foreground">作家特集</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            注目作家の作品を特集してご紹介
+          </p>
+        </div>
+
+        {/* Features list */}
+        {features.length === 0 ? (
+          <div className="py-12 text-center">
+            <p className="text-muted-foreground">作家特集データがまだありません</p>
+          </div>
+        ) : (
+          <div className="grid gap-6 sm:grid-cols-2">
+            {features.map((feature) => (
+              <Link
+                key={feature.id}
+                href={`/features/author/${feature.slug}`}
+                className="block overflow-hidden rounded-lg bg-card transition-all hover:ring-2 hover:ring-accent"
+              >
+                {/* Thumbnail */}
+                <div className="relative h-40 bg-muted">
+                  {feature.thumbnail_url && (
+                    <Image
+                      src={feature.thumbnail_url}
+                      alt={feature.headline}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 640px) 100vw, 50vw"
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/90 to-transparent" />
+                  <div className="absolute bottom-3 left-3 right-3">
+                    <h2 className="line-clamp-1 text-lg font-bold text-foreground">
+                      {feature.headline}
+                    </h2>
+                  </div>
+                </div>
+
+                {/* Info */}
+                <div className="space-y-2 p-4">
+                  <p className="line-clamp-2 text-sm text-muted-foreground">
+                    {feature.description}
+                  </p>
+
+                  <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                    <div className="flex items-center gap-1">
+                      <FileText className="h-3 w-3" />
+                      <span>{feature.work_count}作品</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                      <span>平均 {formatRating(feature.avg_rating)}</span>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
+      </main>
+
+      <Footer />
+    </div>
+  );
+}

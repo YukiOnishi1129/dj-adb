@@ -37,6 +37,7 @@ async function main() {
   const circles = loadJson("circles.json");
   const genreFeatures = loadJson("genre_features.json");
   const circleFeatures = loadJson("circle_features.json");
+  const authorFeatures = loadJson("author_features.json");
 
   // 利用可能な作品のみ
   const availableWorks = works.filter((w) => w.is_available !== false);
@@ -62,8 +63,16 @@ async function main() {
     .filter((c) => circleIdsWithWorks.has(c.id))
     .map((c) => c.name);
 
+  // 作家一覧（works.author_name から、空でないもの）
+  const authorNamesSet = new Set();
+  for (const w of availableWorks) {
+    const name = (w.author_name || "").trim();
+    if (name) authorNamesSet.add(name);
+  }
+  const authorNames = [...authorNamesSet];
+
   console.log(
-    `[Sitemap] Works: ${workIds.length}, Tags: ${tagNames.size}, Circles: ${circleNames.length}`
+    `[Sitemap] Works: ${workIds.length}, Tags: ${tagNames.size}, Circles: ${circleNames.length}, Authors: ${authorNames.length}`
   );
 
   const today = new Date().toISOString().split("T")[0];
@@ -80,9 +89,11 @@ async function main() {
     { path: "/features/sale/", priority: "0.8", changefreq: "daily" },
     { path: "/features/genre/", priority: "0.8", changefreq: "weekly" },
     { path: "/features/circle/", priority: "0.8", changefreq: "weekly" },
+    { path: "/features/author/", priority: "0.8", changefreq: "weekly" },
     { path: "/search/", priority: "0.7", changefreq: "weekly" },
     { path: "/tags/", priority: "0.7", changefreq: "weekly" },
     { path: "/circles/", priority: "0.7", changefreq: "weekly" },
+    { path: "/authors/", priority: "0.7", changefreq: "weekly" },
   ];
 
   for (const page of staticPages) {
@@ -140,6 +151,16 @@ async function main() {
     </url>`);
   }
 
+  // 作家ページ
+  for (const name of authorNames) {
+    urls.push(`
+    <url>
+      <loc>${BASE_URL}/authors/${encodeURIComponent(name)}/</loc>
+      <changefreq>weekly</changefreq>
+      <priority>0.6</priority>
+    </url>`);
+  }
+
   // ジャンル特集ページ
   for (const feature of genreFeatures) {
     if (feature.slug) {
@@ -158,6 +179,18 @@ async function main() {
       urls.push(`
     <url>
       <loc>${BASE_URL}/features/circle/${encodeURIComponent(feature.slug)}/</loc>
+      <changefreq>weekly</changefreq>
+      <priority>0.7</priority>
+    </url>`);
+    }
+  }
+
+  // 作家特集ページ
+  for (const feature of authorFeatures) {
+    if (feature.slug) {
+      urls.push(`
+    <url>
+      <loc>${BASE_URL}/features/author/${encodeURIComponent(feature.slug)}/</loc>
       <changefreq>weekly</changefreq>
       <priority>0.7</priority>
     </url>`);

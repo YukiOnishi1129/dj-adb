@@ -3,7 +3,7 @@ import { Sparkles, Trophy, ChevronRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { FeatureCarousel, FeatureGridCarousel } from "@/components/circle-carousel";
 import type { FeatureCarouselItem } from "@/components/circle-carousel";
-import type { CircleFeature, GenreFeature } from "@/types";
+import type { CircleFeature, GenreFeature, AuthorFeature } from "@/types";
 
 interface FeaturedBannersProps {
   saleThumbnail?: string | null;
@@ -13,6 +13,7 @@ interface FeaturedBannersProps {
   recommendationHeadline?: string | null;
   circleFeatures?: CircleFeature[];
   genreFeatures?: GenreFeature[];
+  authorFeatures?: AuthorFeature[];
 }
 
 // 日付を「1/15」形式にフォーマット
@@ -29,6 +30,7 @@ export function FeaturedBanners({
   recommendationHeadline,
   circleFeatures = [],
   genreFeatures = [],
+  authorFeatures = [],
 }: FeaturedBannersProps) {
   const saleTitle = saleTargetDate
     ? `${formatShortDate(saleTargetDate)}のセール特集`
@@ -40,14 +42,16 @@ export function FeaturedBanners({
 
   const recommendationSubtext = recommendationHeadline || "迷ったらここから選べばハズレなし";
 
-  // サークル特集とジャンル特集を交互に混ぜたカルーセルアイテム
+  // サークル特集・ジャンル特集・作家特集を交互に混ぜたカルーセルアイテム
   const carouselItems: FeatureCarouselItem[] = [];
   const circleItems: FeatureCarouselItem[] = circleFeatures.map((f) => ({ type: "circle", feature: f }));
   const genreItems: FeatureCarouselItem[] = genreFeatures.map((f) => ({ type: "genre", feature: f }));
-  const maxLen = Math.max(circleItems.length, genreItems.length);
+  const authorItems: FeatureCarouselItem[] = authorFeatures.map((f) => ({ type: "author", feature: f }));
+  const maxLen = Math.max(circleItems.length, genreItems.length, authorItems.length);
   for (let i = 0; i < maxLen; i++) {
     if (i < circleItems.length) carouselItems.push(circleItems[i]);
     if (i < genreItems.length) carouselItems.push(genreItems[i]);
+    if (i < authorItems.length) carouselItems.push(authorItems[i]);
   }
 
   const hasFeatures = carouselItems.length > 0;

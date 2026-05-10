@@ -11,6 +11,7 @@ import type {
   Work,
   Circle,
   CircleFeature,
+  AuthorFeature,
   GenreFeature,
   DailyRecommendation,
   SaleFeature,
@@ -23,6 +24,7 @@ const CACHE_DIR = join(process.cwd(), ".cache/data");
 let worksCache: Work[] | null = null;
 let circlesCache: Circle[] | null = null;
 let circlesFeaturesCache: CircleFeature[] | null = null;
+let authorFeaturesCache: AuthorFeature[] | null = null;
 let dailyRecommendationsCache: DailyRecommendation[] | null = null;
 let saleFeaturesCache: SaleFeature[] | null = null;
 let genreFeaturesCache: GenreFeature[] | null = null;
@@ -153,6 +155,85 @@ export async function getCircleFeatureBySlug(
   // URLエンコードされた日本語スラッグをデコードして比較
   const decodedSlug = decodeURIComponent(slug);
   return features.find((f) => f.slug === decodedSlug);
+}
+
+/**
+ * 作家名で作品を取得（評価順）
+ */
+export async function getWorksByAuthorName(authorName: string): Promise<Work[]> {
+  const works = await getWorks();
+  const decodedName = decodeURIComponent(authorName);
+  return works
+    .filter((w) => w.author_name === decodedName)
+    .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
+}
+
+/**
+ * 全作家名の一覧を取得（作品があるもののみ、author_name が空でないもの）
+ */
+export async function getAllAuthorNames(): Promise<string[]> {
+  const works = await getWorks();
+  const authors = new Set<string>();
+  for (const w of works) {
+    const name = (w.author_name || "").trim();
+    if (name) authors.add(name);
+  }
+  return [...authors].sort();
+}
+
+/**
+ * 作家一覧を作品数付きで取得（作品数順）
+ */
+export async function getAuthorsWithWorkCount(): Promise<
+  { name: string; workCount: number }[]
+> {
+  const works = await getWorks();
+  const countMap = new Map<string, number>();
+
+  for (const w of works) {
+    const name = (w.author_name || "").trim();
+    if (!name) continue;
+    countMap.set(name, (countMap.get(name) || 0) + 1);
+  }
+
+  return [...countMap.entries()]
+    .map(([name, workCount]) => ({ name, workCount }))
+    .sort((a, b) => b.workCount - a.workCount);
+}
+
+/**
+ * 作家特集一覧を取得
+ */
+export async function getAuthorFeatures(): Promise<AuthorFeature[]> {
+  if (authorFeaturesCache === null) {
+    authorFeaturesCache = loadJson<AuthorFeature>("author_features.json");
+    console.log(
+      `Loaded ${authorFeaturesCache.length} author features from cache`
+    );
+  }
+  return authorFeaturesCache;
+}
+
+/**
+ * スラッグで作家特集を取得
+ */
+export async function getAuthorFeatureBySlug(
+  slug: string
+): Promise<AuthorFeature | undefined> {
+  const features = await getAuthorFeatures();
+  const decodedSlug = decodeURIComponent(slug);
+  return features.find((f) => f.slug === decodedSlug);
+}
+
+/**
+ * 作家名で作家特集を取得
+ */
+export async function getAuthorFeatureByName(
+  authorName: string
+): Promise<AuthorFeature | undefined> {
+  const features = await getAuthorFeatures();
+  const decodedName = decodeURIComponent(authorName);
+  return features.find((f) => f.author_name === decodedName);
 }
 
 /**

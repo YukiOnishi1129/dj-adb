@@ -86,11 +86,17 @@ export async function Footer() {
             <Link href="/features/circle" className="hover:text-foreground">
               サークル特集
             </Link>
+            <Link href="/features/author" className="hover:text-foreground">
+              作家特集
+            </Link>
             <Link href="/features/daily" className="hover:text-foreground">
               おすすめ
             </Link>
             <Link href="/circles" className="hover:text-foreground">
               サークル一覧
+            </Link>
+            <Link href="/authors" className="hover:text-foreground">
+              作家一覧
             </Link>
             <Link href="/tags" className="hover:text-foreground">
               タグ一覧

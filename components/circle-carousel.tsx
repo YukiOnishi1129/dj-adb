@@ -2,14 +2,15 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, Users, Flame } from "lucide-react";
+import { ChevronLeft, ChevronRight, Users, Flame, Pen } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import type { CircleFeature, GenreFeature } from "@/types";
+import type { CircleFeature, GenreFeature, AuthorFeature } from "@/types";
 
 // カルーセルに表示する統一型
 export type FeatureCarouselItem =
   | { type: "circle"; feature: CircleFeature }
-  | { type: "genre"; feature: GenreFeature };
+  | { type: "genre"; feature: GenreFeature }
+  | { type: "author"; feature: AuthorFeature };
 
 interface CircleCarouselProps {
   features: CircleFeature[];
@@ -130,10 +131,64 @@ function GenreCarouselItemMobile({ feature }: { feature: GenreFeature }) {
   );
 }
 
+// モバイル用カルーセルアイテム（作家特集）
+function AuthorCarouselItemMobile({ feature }: { feature: AuthorFeature }) {
+  return (
+    <Link href={`/features/author/${feature.slug}`}>
+      <Card className="h-full overflow-hidden border border-blue-500/30 transition-all hover:border-blue-500/50">
+        <div className="relative aspect-[4/3] overflow-hidden">
+          {feature.thumbnail_url ? (
+            <img
+              src={feature.thumbnail_url}
+              alt=""
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center bg-blue-500/10">
+              <Pen className="h-8 w-8 text-blue-500" />
+            </div>
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent" />
+          <div
+            className="absolute left-2 top-2 rounded-md bg-blue-500 px-2.5 py-1 text-sm font-bold text-white"
+            style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.5)" }}
+          >
+            ✍️ 作家特集
+          </div>
+          <div className="absolute bottom-0 left-0 right-0 p-4">
+            <div className="mb-1 flex items-center gap-2">
+              <Pen
+                className="h-5 w-5 text-blue-400"
+                style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.8))" }}
+              />
+              <span
+                className="text-base font-bold text-white"
+                style={{ textShadow: "0 2px 8px rgba(0,0,0,0.9)" }}
+              >
+                {feature.author_name}特集
+              </span>
+            </div>
+            <p
+              className="line-clamp-2 text-sm font-bold text-white/90"
+              style={{ textShadow: "0 2px 8px rgba(0,0,0,0.9)" }}
+            >
+              {feature.headline || feature.description}
+            </p>
+          </div>
+        </div>
+      </Card>
+    </Link>
+  );
+}
+
 // モバイル用統一カルーセルアイテム
 function CarouselItem({ item }: { item: FeatureCarouselItem }) {
   if (item.type === "circle") {
     return <CircleCarouselItemMobile feature={item.feature} />;
+  }
+  if (item.type === "author") {
+    return <AuthorCarouselItemMobile feature={item.feature} />;
   }
   return <GenreCarouselItemMobile feature={item.feature} />;
 }
@@ -233,10 +288,58 @@ function GenreGridItem({ feature }: { feature: GenreFeature }) {
   );
 }
 
+// PC用グリッドカルーセルアイテム（作家特集）
+function AuthorGridItem({ feature }: { feature: AuthorFeature }) {
+  return (
+    <Link href={`/features/author/${feature.slug}`}>
+      <Card className="group overflow-hidden border border-blue-500/30 transition-all hover:border-blue-500/50">
+        <div className="relative aspect-[4/3] overflow-hidden">
+          {feature.thumbnail_url ? (
+            <img
+              src={feature.thumbnail_url}
+              alt=""
+              className="h-full w-full object-cover transition-transform group-hover:scale-105"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center bg-blue-500/10">
+              <Pen className="h-8 w-8 text-blue-500" />
+            </div>
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent" />
+          <div
+            className="absolute left-2 top-2 rounded-md bg-blue-500 px-2 py-1 text-xs font-bold text-white"
+            style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.5)" }}
+          >
+            ✍️ 作家特集
+          </div>
+          <div className="absolute bottom-0 left-0 right-0 p-2">
+            <div className="mb-0.5 flex items-center gap-1">
+              <Pen
+                className="h-3 w-3 text-blue-400"
+                style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.8))" }}
+              />
+              <span
+                className="truncate text-xs font-bold text-white"
+                style={{ textShadow: "0 2px 8px rgba(0,0,0,0.9)" }}
+              >
+                {feature.author_name}
+              </span>
+            </div>
+          </div>
+        </div>
+      </Card>
+    </Link>
+  );
+}
+
 // PC用統一グリッドカルーセルアイテム
 function GridCarouselItem({ item }: { item: FeatureCarouselItem }) {
   if (item.type === "circle") {
     return <CircleGridItem feature={item.feature} />;
+  }
+  if (item.type === "author") {
+    return <AuthorGridItem feature={item.feature} />;
   }
   return <GenreGridItem feature={item.feature} />;
 }

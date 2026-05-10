@@ -97,6 +97,7 @@ async function main() {
     "works.parquet",
     "circles.parquet",
     "circle_features.parquet",
+    "author_features.parquet",
     "daily_recommendations.parquet",
     "sale_features.parquet",
     "genre_features.parquet",

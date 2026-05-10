@@ -69,6 +69,27 @@ export interface CircleFeature {
   created_at?: string;
 }
 
+// 作家特集内の作品（サークル名も付く）
+export interface AuthorFeatureWork extends FeatureWork {
+  page_count: number;
+  circle_name: string | null;
+}
+
+// 作家特集
+export interface AuthorFeature {
+  id: number;
+  author_name: string;
+  slug: string;
+  headline: string;
+  description: string;
+  total_sales: number;
+  work_count: number;
+  avg_rating: number;
+  thumbnail_url: string | null;
+  works: AuthorFeatureWork[];
+  created_at?: string;
+}
+
 // 今日のおすすめ内の作品
 export interface DailyRecommendationWork extends FeatureWork {
   circle_name: string;
