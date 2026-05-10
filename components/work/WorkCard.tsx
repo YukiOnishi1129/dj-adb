@@ -127,11 +127,26 @@ export const WorkCard = memo(function WorkCard({
 
         {/* 情報エリア */}
         <div className="p-3">
-          {/* サークル名 */}
-          <div className="mb-1.5">
-            <Badge variant="circle" className="text-[10px]">
-              {work.circle_name}
-            </Badge>
+          {/* サークル名 / 作家名（source_type=books の場合は作家・出版社を表示） */}
+          <div className="mb-1.5 flex flex-wrap items-center gap-1">
+            {work.source_type === "books" ? (
+              <>
+                <Badge variant="circle" className="text-[10px] bg-blue-500/20 text-blue-700 dark:text-blue-300">
+                  📕 商業
+                </Badge>
+                {work.author_name && (
+                  <Badge variant="circle" className="text-[10px]">
+                    {work.author_name}
+                  </Badge>
+                )}
+              </>
+            ) : (
+              work.circle_name && (
+                <Badge variant="circle" className="text-[10px]">
+                  {work.circle_name}
+                </Badge>
+              )
+            )}
           </div>
 
           {/* タイトル */}

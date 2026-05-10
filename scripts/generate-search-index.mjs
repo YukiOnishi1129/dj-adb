@@ -99,6 +99,8 @@ function convertToSearchItem(work) {
     t: work.title,
     c: work.circle_name || "",
     a: work.author_name || "", // 作者名
+    pub: work.publisher_name || "", // 出版社名（books のみ）
+    st: work.source_type || "doujin", // ソースタイプ
     tg: work.genre_tags || [],
     p: currentPrice,
     dp: originalPrice,

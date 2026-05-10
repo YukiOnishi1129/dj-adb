@@ -154,11 +154,29 @@ export function HorizontalScrollSection({
 
                 {/* 情報エリア */}
                 <div className="p-2.5">
-                  {/* サークル名 */}
-                  <div className="mb-1">
-                    <Badge variant="circle" className="text-[9px] px-1.5 py-0">
-                      {work.circle_name}
-                    </Badge>
+                  {/* サークル名 / 作家名（books は商業バッジ + 作家名） */}
+                  <div className="mb-1 flex flex-wrap items-center gap-1">
+                    {work.source_type === "books" ? (
+                      <>
+                        <Badge
+                          variant="circle"
+                          className="text-[9px] px-1.5 py-0 bg-blue-500/20 text-blue-700 dark:text-blue-300"
+                        >
+                          📕 商業
+                        </Badge>
+                        {work.author_name && (
+                          <Badge variant="circle" className="text-[9px] px-1.5 py-0">
+                            {work.author_name}
+                          </Badge>
+                        )}
+                      </>
+                    ) : (
+                      work.circle_name && (
+                        <Badge variant="circle" className="text-[9px] px-1.5 py-0">
+                          {work.circle_name}
+                        </Badge>
+                      )
+                    )}
                   </div>
 
                   {/* タイトル */}

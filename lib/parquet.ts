@@ -45,6 +45,7 @@ function loadJson<T>(filename: string): T[] {
 /**
  * 作品データを取得（キャッシュ付き）
  * circle_nameがnullの場合はcirclesデータから補完する
+ * source_type=books の場合はサークル概念がないので空文字のまま
  */
 export async function getWorks(): Promise<Work[]> {
   if (worksCache === null) {
@@ -54,11 +55,17 @@ export async function getWorks(): Promise<Work[]> {
     // circle_idからcircle_nameをマッピング
     const circleMap = new Map(circles.map((c) => [c.id, c.name]));
 
-    // circle_nameを補完
-    worksCache = rawWorks.map((work) => ({
-      ...work,
-      circle_name: work.circle_name || circleMap.get(work.circle_id) || "不明",
-    }));
+    // circle_nameを補完（doujinのみ、booksはサークル概念なし）
+    worksCache = rawWorks.map((work) => {
+      if (work.source_type === "books") {
+        // books はサークル名フォールバックしない（空文字のまま）
+        return { ...work, circle_name: work.circle_name || "" };
+      }
+      return {
+        ...work,
+        circle_name: work.circle_name || circleMap.get(work.circle_id) || "不明",
+      };
+    });
 
     console.log(`Loaded ${worksCache.length} works from cache`);
   }
@@ -324,9 +331,27 @@ export async function getRelatedWorksByCircle(
   excludeWorkId: number,
   limit: number = 6
 ): Promise<Work[]> {
+  // 空文字や「不明」は検索しない（books は circle_name 空、欠損 doujin も同様）
+  if (!circleName || circleName === "不明") return [];
   const works = await getWorks();
   return works
     .filter((w) => w.circle_name === circleName && w.id !== excludeWorkId)
+    .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))
+    .slice(0, limit);
+}
+
+/**
+ * 同じ作家の他の作品を取得（現在の作品を除く、評価順）
+ */
+export async function getRelatedWorksByAuthor(
+  authorName: string | null | undefined,
+  excludeWorkId: number,
+  limit: number = 6
+): Promise<Work[]> {
+  if (!authorName) return [];
+  const works = await getWorks();
+  return works
+    .filter((w) => w.author_name === authorName && w.id !== excludeWorkId)
     .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))
     .slice(0, limit);
 }

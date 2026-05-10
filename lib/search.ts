@@ -5,6 +5,8 @@ export type SearchItem = {
   t: string; // タイトル
   c: string; // サークル名
   a: string; // 作者名
+  pub?: string; // 出版社名（books のみ）
+  st?: "doujin" | "books"; // ソースタイプ（books = 商業）
   tg: string[]; // タグ名リスト
   p: number; // 現在価格
   dp: number; // 定価

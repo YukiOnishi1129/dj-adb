@@ -26,6 +26,11 @@ export interface Work {
   ai_warnings: string | null;
   ai_review: string | null;
   genre_tags: string[] | null;
+  // FANZA Books（商業電子書籍）対応
+  source_type?: "doujin" | "books";   // デフォルト doujin
+  tachiyomi_url?: string | null;       // books の試し読みリンク
+  publisher_name?: string | null;      // books の出版社名
+  affiliate_url?: string | null;       // FANZA作品ページへの直接リンク（books はAPI由来）
   created_at?: string;
   updated_at?: string;
 }

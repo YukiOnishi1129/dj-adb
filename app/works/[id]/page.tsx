@@ -13,6 +13,7 @@ import {
   getWorks,
   getWorkById,
   getRelatedWorksByCircle,
+  getRelatedWorksByAuthor,
   getRelatedWorksByGenre,
   getCircleFeatureByName,
   getCircleFeatures,
@@ -73,13 +74,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const pageInfo = work.page_count ? `${work.page_count}P` : "";
   const detailParts = [ratingText, priceText, pageInfo].filter(Boolean).join("｜");
 
-  // 冒頭60文字に詰める核心情報: 「{サークル名}の{ジャンル}同人コミック・CG」
+  // 冒頭60文字に詰める核心情報
+  const isBookForMeta = work.source_type === "books";
+  const workCategory = isBookForMeta ? "商業コミック" : "同人コミック・CG";
+  const subjectName = isBookForMeta ? work.author_name : work.circle_name;
   const genreInfo = topGenres.length > 0 ? `${topGenres.join("・")}` : "";
-  const leadCore = work.circle_name && genreInfo
-    ? `${work.circle_name}の${genreInfo}同人コミック・CGレビュー。`
-    : work.circle_name
-    ? `${work.circle_name}の同人コミック・CGレビュー。`
-    : `同人コミック・CG作品レビュー。`;
+  const leadCore = subjectName && genreInfo
+    ? `${subjectName}の${genreInfo}${workCategory}レビュー。`
+    : subjectName
+    ? `${subjectName}の${workCategory}レビュー。`
+    : `${workCategory}作品レビュー。`;
 
   // 本文（ai_appeal_points or ai_summary）を残り文字数に応じて抜粋
   const baseBody = work.ai_appeal_points || work.ai_summary || "";
@@ -121,14 +125,24 @@ export default async function WorkDetailPage({ params }: Props) {
   }
 
   const isOnSale = work.sale_price !== null && work.sale_price < work.price;
-  const fanzaUrl = getFanzaUrl(work.fanza_content_id);
+  const isBook = work.source_type === "books";
+  // Books は APIで取得済みのアフィリエイトURLをそのまま使う。同人は cid からアフィURLを生成
+  const fanzaUrl = isBook && work.affiliate_url
+    ? work.affiliate_url
+    : getFanzaUrl(work.fanza_content_id);
+  const tachiyomiUrl = isBook ? work.tachiyomi_url || null : null;
   const displayPrice = isOnSale ? work.sale_price! : work.price;
 
   // 関連データを取得（SEO: 内部リンク密度を上げるため、各セクション8件）
+  // books は サークル概念がないので、関連作品は author で引く
   const [circleWorks, relatedWorks, circleFeature, allCircleFeatures, recommendedWorks] = await Promise.all([
-    getRelatedWorksByCircle(work.circle_name, work.id, 8),
+    isBook
+      ? getRelatedWorksByAuthor(work.author_name, work.id, 8)
+      : getRelatedWorksByCircle(work.circle_name, work.id, 8),
     getRelatedWorksByGenre(work.genre_tags || [], work.id, 8),
-    getCircleFeatureByName(work.circle_name),
+    isBook
+      ? Promise.resolve(undefined)
+      : getCircleFeatureByName(work.circle_name),
     getCircleFeatures(),
     getRecommendedWorks(work.id, 8),
   ]);
@@ -283,19 +297,46 @@ export default async function WorkDetailPage({ params }: Props) {
             ) : null}
           </p>
 
-          {/* サークル */}
+          {/* サークル / 商業ラベル + 作家・出版社 */}
           <div className="text-muted-foreground">
-            <Link
-              href={`/circles/${encodeURIComponent(work.circle_name)}`}
-              className="hover:text-foreground"
-            >
-              <Badge variant="circle">{work.circle_name}</Badge>
-            </Link>
-            {work.author_name && (
+            {isBook ? (
               <>
-                <span className="mx-2 text-muted-foreground/50">|</span>
-                <span className="text-muted-foreground/70">作者:</span>{" "}
-                <span className="text-foreground">{work.author_name}</span>
+                <Badge variant="circle" className="bg-blue-500/20 text-blue-700 dark:text-blue-300 mr-2">
+                  📕 商業（FANZAブックス）
+                </Badge>
+                {work.author_name && (
+                  <Link
+                    href={`/authors/${encodeURIComponent(work.author_name)}`}
+                    className="hover:text-foreground"
+                  >
+                    <Badge variant="circle">{work.author_name}</Badge>
+                  </Link>
+                )}
+                {work.publisher_name && (
+                  <>
+                    <span className="mx-2 text-muted-foreground/50">|</span>
+                    <span className="text-muted-foreground/70">出版社:</span>{" "}
+                    <span className="text-foreground">{work.publisher_name}</span>
+                  </>
+                )}
+              </>
+            ) : (
+              <>
+                {work.circle_name && (
+                  <Link
+                    href={`/circles/${encodeURIComponent(work.circle_name)}`}
+                    className="hover:text-foreground"
+                  >
+                    <Badge variant="circle">{work.circle_name}</Badge>
+                  </Link>
+                )}
+                {work.author_name && (
+                  <>
+                    <span className="mx-2 text-muted-foreground/50">|</span>
+                    <span className="text-muted-foreground/70">作者:</span>{" "}
+                    <span className="text-foreground">{work.author_name}</span>
+                  </>
+                )}
               </>
             )}
           </div>
@@ -357,7 +398,7 @@ export default async function WorkDetailPage({ params }: Props) {
 
               {/* 大きなCTAボタン */}
               <FanzaLink
-                url={fanzaUrl}
+                url={tachiyomiUrl || fanzaUrl}
                 workId={work.id}
                 source="detail_top"
                 className={`flex w-full items-center justify-center gap-2 rounded-full py-4 text-lg font-bold text-white transition-all shadow-lg hover:shadow-xl hover:scale-[1.02] ${
@@ -390,7 +431,9 @@ export default async function WorkDetailPage({ params }: Props) {
 
               {/* 補足テキスト */}
               <p className="mt-2 text-center text-xs text-muted-foreground">
-                無料の試し読み・サンプルで確認できます
+                {isBook
+                  ? "電子書籍版（FANZAブックス）で試し読みできます"
+                  : "無料の試し読み・サンプルで確認できます"}
               </p>
             </CardContent>
           </Card>
@@ -535,16 +578,31 @@ export default async function WorkDetailPage({ params }: Props) {
                   <span className="font-medium text-foreground">{work.page_count}ページ</span>
                 </div>
               )}
-              {work.circle_name && (
-                <div className="flex items-center justify-between border-b border-border pb-2">
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                    </svg>
-                    <span>サークル</span>
+              {/* doujin: サークル / books: 出版社 */}
+              {isBook ? (
+                work.publisher_name && (
+                  <div className="flex items-center justify-between border-b border-border pb-2">
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                      </svg>
+                      <span>出版社</span>
+                    </div>
+                    <span className="font-medium text-foreground">{work.publisher_name}</span>
                   </div>
-                  <span className="font-medium text-foreground">{work.circle_name}</span>
-                </div>
+                )
+              ) : (
+                work.circle_name && (
+                  <div className="flex items-center justify-between border-b border-border pb-2">
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                      </svg>
+                      <span>サークル</span>
+                    </div>
+                    <span className="font-medium text-foreground">{work.circle_name}</span>
+                  </div>
+                )
               )}
               {work.author_name && (
                 <div className="flex items-center justify-between border-b border-border pb-2">
@@ -552,7 +610,7 @@ export default async function WorkDetailPage({ params }: Props) {
                     <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
-                    <span>作者</span>
+                    <span>{isBook ? "作家" : "作者"}</span>
                   </div>
                   <span className="font-medium text-foreground">{work.author_name}</span>
                 </div>
@@ -857,11 +915,13 @@ export default async function WorkDetailPage({ params }: Props) {
             </div>
           )}
 
-          {/* 同じサークルの他の作品 */}
+          {/* 同サークル / 同作家 の他の作品 */}
           {circleWorks.length > 0 && (
             <section id="circle-works" className="mt-8 space-y-4">
               <h2 id="circle-works-heading" className="text-lg font-bold text-foreground">
-                🎨 {work.circle_name}の他の人気作品
+                {isBook
+                  ? `✍️ ${work.author_name}の他の人気作品`
+                  : `🎨 ${work.circle_name}の他の人気作品`}
               </h2>
               <WorkGrid works={circleWorks} columns={2} />
             </section>
