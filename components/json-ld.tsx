@@ -148,3 +148,224 @@ export function BreadcrumbJsonLd({
     />
   );
 }
+
+// =============================================================================
+// Organization JSON-LD（サイト全体の運営主体を Google / AI に伝える）
+// =============================================================================
+// SEO目的:
+// - E-E-A-T の「権威性・信頼性」を構造化データとして提示
+// - AI（AIによる概要 / AIモード）への引用時の責任主体識別
+// - 匿名アフィリエイトサイトとの差別化
+export function OrganizationJsonLd() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "DJ-ADB",
+    alternateName: "DJ-ADB編集部",
+    url: "https://dj-adb.com",
+    logo: "https://dj-adb.com/ogp/recommendation_ogp.png",
+    description:
+      "FANZA同人コミック・CG・商業電子書籍の厳選レビューサイト。評価・ランキング・セール情報をAIによる分析と人手の編集で整理してお届けします。",
+    sameAs: [
+      "https://x.com/dj_adb",
+    ],
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  );
+}
+
+// =============================================================================
+// WebSite JSON-LD（サイト内検索のサジェスト + サイト名統一）
+// =============================================================================
+export function WebSiteJsonLd() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "DJ-ADB",
+    alternateName: "DJ-ADB | 同人コミック・CGの厳選レビューサイト",
+    url: "https://dj-adb.com",
+    inLanguage: "ja",
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: "https://dj-adb.com/search?q={search_term_string}",
+      },
+      "query-input": "required name=search_term_string",
+    },
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  );
+}
+
+// =============================================================================
+// Person JSON-LD（作家ページ用）
+// =============================================================================
+// SEO目的:
+// - 作家を「人物エンティティ」として Google / AI に明示
+// - 作家名でのナレッジパネル候補化、AIモード引用時の精度向上
+// - E-E-A-T の「専門性」を作家単位で表現
+interface PersonJsonLdProps {
+  name: string;
+  /** 作品数 */
+  workCount: number;
+  /** 平均評価（1-5） */
+  avgRating?: number | null;
+  /** 代表作のサムネURL */
+  thumbnailUrl?: string | null;
+  /** ページURL（絶対URL） */
+  pageUrl: string;
+}
+
+export function PersonJsonLd({
+  name,
+  workCount,
+  avgRating,
+  thumbnailUrl,
+  pageUrl,
+}: PersonJsonLdProps) {
+  const description = `同人コミック・CG・商業電子書籍を手がける作家「${name}」の作品${workCount}件をまとめたページ。レビュー・評価・人気作・セール情報をDJ-ADB編集部が整理しています。`;
+
+  const jsonLd: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name,
+    url: pageUrl,
+    description,
+    jobTitle: "漫画家",
+    knowsAbout: ["同人コミック", "CG集", "商業電子書籍"],
+  };
+
+  if (thumbnailUrl) {
+    jsonLd.image = thumbnailUrl;
+  }
+
+  if (avgRating && avgRating > 0) {
+    jsonLd.aggregateRating = {
+      "@type": "AggregateRating",
+      ratingValue: avgRating.toFixed(2),
+      reviewCount: workCount,
+      bestRating: 5,
+      worstRating: 1,
+    };
+  }
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  );
+}
+
+// =============================================================================
+// Circle (Organization) JSON-LD（サークルページ用）
+// =============================================================================
+interface CircleOrganizationJsonLdProps {
+  name: string;
+  /** 作品数 */
+  workCount: number;
+  /** メインジャンル */
+  mainGenre?: string | null;
+  pageUrl: string;
+}
+
+export function CircleOrganizationJsonLd({
+  name,
+  workCount,
+  mainGenre,
+  pageUrl,
+}: CircleOrganizationJsonLdProps) {
+  const genreText = mainGenre ? `（${mainGenre}）` : "";
+  const description = `同人サークル「${name}」${genreText}の作品${workCount}件をまとめたページ。サークルの代表作・人気作・セール情報をDJ-ADB編集部が整理しています。`;
+
+  const jsonLd: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name,
+    url: pageUrl,
+    description,
+    additionalType: "https://schema.org/CreativeWork",
+  };
+
+  if (mainGenre) {
+    jsonLd.knowsAbout = [mainGenre, "同人作品"];
+  }
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  );
+}
+
+// =============================================================================
+// Article JSON-LD（特集ページ用 / 編集部記事として明示）
+// =============================================================================
+interface ArticleJsonLdProps {
+  headline: string;
+  description: string;
+  url: string;
+  imageUrl?: string | null;
+  datePublished?: string;
+}
+
+export function ArticleJsonLd({
+  headline,
+  description,
+  url,
+  imageUrl,
+  datePublished,
+}: ArticleJsonLdProps) {
+  const buildDate = getBuildDateIso();
+  const jsonLd: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: headline.slice(0, 110),
+    description,
+    url,
+    inLanguage: "ja",
+    datePublished: datePublished ?? buildDate,
+    dateModified: buildDate,
+    author: {
+      "@type": "Organization",
+      name: "DJ-ADB編集部",
+      url: "https://dj-adb.com/editorial/",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "DJ-ADB",
+      url: "https://dj-adb.com",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://dj-adb.com/ogp/recommendation_ogp.png",
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": url,
+    },
+  };
+
+  if (imageUrl) {
+    jsonLd.image = imageUrl;
+  }
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  );
+}

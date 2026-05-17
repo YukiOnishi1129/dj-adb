@@ -6,7 +6,9 @@ import { Header, Footer } from "@/components/layout";
 import { WorkGridWithLoadMore } from "@/components/work";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { BreadcrumbJsonLd } from "@/components/json-ld";
+import { BreadcrumbJsonLd, PersonJsonLd } from "@/components/json-ld";
+import { LastUpdated } from "@/components/last-updated";
+import { EditorialCredit } from "@/components/editorial-credit";
 import {
   getWorksByAuthorName,
   getAllAuthorNames,
@@ -38,7 +40,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     : null;
 
   // layout.tsx の template: "%s | DJ-ADB" が自動付与されるので末尾の "| DJ-ADB" は省略
-  const title = `${decodedName}の同人コミック・CGおすすめ${works.length}選 レビュー・感想・セール情報`;
+  const year = new Date().getFullYear();
+  const saleBadge = saleCount > 0 ? `【${saleCount}作品セール中】` : "";
+  const title = `${saleBadge}【${year}年最新】${decodedName}の同人コミック・CGおすすめ${works.length}選｜作家別レビュー | DJ-ADB`;
   const genreText = topGenres.length > 0 ? `主なジャンルは${topGenres.join("・")}。` : "";
   const ratingText = avgRating ? `平均評価★${avgRating}。` : "";
   const saleText = saleCount > 0 ? `セール中${saleCount}作品。` : "";
@@ -96,6 +100,10 @@ export default async function AuthorDetailPage({ params }: Props) {
     new Set(works.map((w) => w.circle_name).filter(Boolean))
   );
 
+  // 代表作のサムネ（評価の高い1件）
+  const topThumbnailUrl = sortedWorks[0]?.thumbnail_url ?? null;
+  const authorPageUrl = `https://dj-adb.com/authors/${name}/`;
+
   return (
     <div className="min-h-screen bg-background">
       <BreadcrumbJsonLd
@@ -105,21 +113,31 @@ export default async function AuthorDetailPage({ params }: Props) {
           { label: decodedName },
         ]}
       />
+      <PersonJsonLd
+        name={decodedName}
+        workCount={works.length}
+        avgRating={avgRating}
+        thumbnailUrl={topThumbnailUrl}
+        pageUrl={authorPageUrl}
+      />
       <Header />
 
       <main className="mx-auto max-w-5xl px-4 py-8">
-        {/* パンくずリスト */}
-        <nav className="mb-6 text-sm text-muted-foreground">
-          <Link href="/" className="hover:text-foreground">
-            トップ
-          </Link>
-          <span className="mx-2">/</span>
-          <Link href="/authors" className="hover:text-foreground">
-            作家一覧
-          </Link>
-          <span className="mx-2">/</span>
-          <span className="text-foreground">{decodedName}</span>
-        </nav>
+        {/* パンくず + 最終更新日 */}
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-2">
+          <nav className="text-sm text-muted-foreground">
+            <Link href="/" className="hover:text-foreground">
+              トップ
+            </Link>
+            <span className="mx-2">/</span>
+            <Link href="/authors" className="hover:text-foreground">
+              作家一覧
+            </Link>
+            <span className="mx-2">/</span>
+            <span className="text-foreground">{decodedName}</span>
+          </nav>
+          <LastUpdated variant="card" />
+        </div>
 
         {/* ヘッダーカード */}
         <Card className="mb-6 border-border">
@@ -259,6 +277,8 @@ export default async function AuthorDetailPage({ params }: Props) {
         {/* 作品一覧 */}
         <h2 className="mb-4 text-lg font-bold text-foreground">作品一覧</h2>
         <WorkGridWithLoadMore works={sortedWorks} initialCount={20} loadMoreCount={20} />
+
+        <EditorialCredit />
       </main>
 
       <Footer />

@@ -90,10 +90,11 @@ async function main() {
     { path: "/features/genre/", priority: "0.8", changefreq: "weekly" },
     { path: "/features/circle/", priority: "0.8", changefreq: "weekly" },
     { path: "/features/author/", priority: "0.8", changefreq: "weekly" },
-    { path: "/search/", priority: "0.7", changefreq: "weekly" },
+    // /search/ は robots.txt で Disallow しているのでサイトマップにも含めない
     { path: "/tags/", priority: "0.7", changefreq: "weekly" },
     { path: "/circles/", priority: "0.7", changefreq: "weekly" },
     { path: "/authors/", priority: "0.7", changefreq: "weekly" },
+    { path: "/editorial/", priority: "0.5", changefreq: "monthly" },
   ];
 
   for (const page of staticPages) {

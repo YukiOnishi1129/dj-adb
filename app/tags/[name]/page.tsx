@@ -7,6 +7,8 @@ import { WorkGridWithLoadMore } from "@/components/work";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { BreadcrumbJsonLd } from "@/components/json-ld";
+import { LastUpdated } from "@/components/last-updated";
+import { EditorialCredit } from "@/components/editorial-credit";
 import { getWorks, getGenreFeatures } from "@/lib/parquet";
 import type { GenreFeature } from "@/types";
 
@@ -63,7 +65,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   ).slice(0, 5);
 
   // layout.tsx の template: "%s | DJ-ADB" が自動付与される
-  const title = `${decodedName}の同人コミック・CGおすすめ${tagWorks.length}選 レビュー・感想・セール情報`;
+  const year = new Date().getFullYear();
+  const saleBadge = saleCount > 0 ? `【${saleCount}作品セール中】` : "";
+  const title = `${saleBadge}【${year}年最新】「${decodedName}」の同人コミック・CGおすすめ${tagWorks.length}選｜タグ別レビュー | DJ-ADB`;
   const ratingText = avgRating ? `平均評価★${avgRating}。` : "";
   const saleText = saleCount > 0 ? `セール中${saleCount}作品。` : "";
   const circleText = topCircles.length > 0 ? `人気サークルは${topCircles.join("・")}など。` : "";
@@ -162,18 +166,21 @@ export default async function TagDetailPage({ params }: Props) {
       <Header />
 
       <main className="mx-auto max-w-5xl px-4 py-8">
-        {/* パンくずリスト */}
-        <nav className="mb-6 text-sm text-muted-foreground">
-          <Link href="/" className="hover:text-foreground">
-            トップ
-          </Link>
-          <span className="mx-2">/</span>
-          <Link href="/tags" className="hover:text-foreground">
-            タグ
-          </Link>
-          <span className="mx-2">/</span>
-          <span className="text-foreground">{decodedName}</span>
-        </nav>
+        {/* パンくず + 最終更新日 */}
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-2">
+          <nav className="text-sm text-muted-foreground">
+            <Link href="/" className="hover:text-foreground">
+              トップ
+            </Link>
+            <span className="mx-2">/</span>
+            <Link href="/tags" className="hover:text-foreground">
+              タグ
+            </Link>
+            <span className="mx-2">/</span>
+            <span className="text-foreground">{decodedName}</span>
+          </nav>
+          <LastUpdated variant="card" />
+        </div>
 
         {/* ヘッダーカード */}
         <Card className="mb-6 border-border">
@@ -296,6 +303,8 @@ export default async function TagDetailPage({ params }: Props) {
         {/* 作品一覧 */}
         <h2 className="mb-4 text-lg font-bold text-foreground">作品一覧</h2>
         <WorkGridWithLoadMore works={sortedWorks} initialCount={20} loadMoreCount={20} />
+
+        <EditorialCredit />
       </main>
 
       <Footer />

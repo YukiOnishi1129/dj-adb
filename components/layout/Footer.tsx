@@ -101,6 +101,9 @@ export async function Footer() {
             <Link href="/tags" className="hover:text-foreground">
               タグ一覧
             </Link>
+            <Link href="/editorial" className="hover:text-foreground">
+              編集方針
+            </Link>
           </div>
           {/* 姉妹サイト */}
           <div className="mb-4">

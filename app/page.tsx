@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Header, Footer } from "@/components/layout";
+import { LastUpdated } from "@/components/last-updated";
+import { PurposeNavigation } from "@/components/purpose-navigation";
 import { HorizontalScrollSection } from "@/components/horizontal-scroll-section";
 import { HeroSaleBanner } from "@/components/hero-sale-banner";
 import { CampaignBanner } from "@/components/campaign-banner";
@@ -91,6 +93,14 @@ export default async function Home() {
       <Header />
 
       <main className="mx-auto max-w-7xl px-6 py-4">
+        {/* SEO用 h1（視覚的には控えめ、検索エンジン向けのメインテーマ宣言） */}
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+          <h1 className="text-sm font-medium text-muted-foreground sm:text-base">
+            DJ-ADB | 同人コミック・CGの厳選レビューサイト
+          </h1>
+          <LastUpdated variant="card" />
+        </div>
+
         {/* FANZA春の同人祭バナー（〜2026/05/18 11:59まで） */}
         {isDoujinFestivalActive() && (
           <CampaignBanner
@@ -119,6 +129,9 @@ export default async function Home() {
           genreFeatures={genreFeatures}
           authorFeatures={authorFeatures}
         />
+
+        {/* 目的別ナビゲーション（お困りごと別ご案内、SEO本【3】トップページ順位UP施策） */}
+        <PurposeNavigation />
 
         {/* トレンドチップ（コンパクト） */}
         <TrendingChips circles={topCircles} tags={popularTags} />

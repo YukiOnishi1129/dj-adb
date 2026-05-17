@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 import { MobileNav } from "@/components/mobile-nav";
-import { WebsiteJsonLd } from "@/components/json-ld";
+import { WebsiteJsonLd, OrganizationJsonLd, WebSiteJsonLd } from "@/components/json-ld";
 import "./globals.css";
 
 const GA_MEASUREMENT_ID = "G-CW6YS7PYBW";
@@ -95,6 +95,10 @@ export default function RootLayout({
           name="DJ-ADB"
           description="同人コミック・CGの最新ランキング、セール情報、おすすめ作品を毎日更新。FANZAの人気作品をチェック！"
         />
+        {/* サイト全体の構造化データ（Organization / WebSite SearchAction）
+            E-E-A-T の権威性・信頼性を Google / AI に伝える */}
+        <OrganizationJsonLd />
+        <WebSiteJsonLd />
         {children}
         <MobileNav />
         {/* モバイルナビの高さ分の余白 */}

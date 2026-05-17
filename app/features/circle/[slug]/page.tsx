@@ -15,6 +15,9 @@ import {
 } from "lucide-react";
 import { Header, Footer } from "@/components/layout";
 import { SisterSiteBanner } from "@/components/sister-site-banner";
+import { LastUpdated } from "@/components/last-updated";
+import { EditorialCredit } from "@/components/editorial-credit";
+import { ArticleJsonLd } from "@/components/json-ld";
 import {
   getCircleFeatures,
   getCircleFeatureBySlug,
@@ -318,23 +321,41 @@ export default async function CircleFeatureDetailPage({ params }: Props) {
     return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
   };
 
+  const year = new Date().getFullYear();
+  const articleHeadline = `【${year}年最新】${feature.circle_name}特集 おすすめ同人コミック・CG${feature.works.length}選`;
+  const articleDescription =
+    (feature.headline || feature.description)
+      ? `${feature.circle_name}の人気作品${feature.works.length}選を厳選。${feature.headline || feature.description}`
+      : `${feature.circle_name}の人気同人コミック・CG${feature.works.length}作品をDJ-ADB編集部が厳選レビュー。`;
+  const articleUrl = `https://dj-adb.com/features/circle/${slug}/`;
+
   return (
     <div className="min-h-screen bg-background">
+      <ArticleJsonLd
+        headline={articleHeadline}
+        description={articleDescription}
+        url={articleUrl}
+        imageUrl={feature.thumbnail_url}
+        datePublished={feature.created_at}
+      />
       <Header />
 
       <main className="mx-auto max-w-3xl px-4 py-4">
-        {/* パンくずリスト */}
-        <nav className="mb-4 text-sm text-muted-foreground">
-          <Link href="/" className="hover:text-foreground">
-            トップ
-          </Link>
-          <span className="mx-2">/</span>
-          <Link href="/features/circle" className="hover:text-foreground">
-            サークル特集
-          </Link>
-          <span className="mx-2">/</span>
-          <span className="text-foreground">{feature.circle_name}</span>
-        </nav>
+        {/* パンくず + 最終更新日 */}
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+          <nav className="text-sm text-muted-foreground">
+            <Link href="/" className="hover:text-foreground">
+              トップ
+            </Link>
+            <span className="mx-2">/</span>
+            <Link href="/features/circle" className="hover:text-foreground">
+              サークル特集
+            </Link>
+            <span className="mx-2">/</span>
+            <span className="text-foreground">{feature.circle_name}</span>
+          </nav>
+          <LastUpdated variant="card" />
+        </div>
 
         {/* ヘッダー */}
         <div className="mb-6 mt-4">
@@ -513,6 +534,7 @@ export default async function CircleFeatureDetailPage({ params }: Props) {
         )}
 
         {/* 姉妹サイトバナー */}
+        <EditorialCredit variant="feature" />
         <SisterSiteBanner />
       </main>
 
