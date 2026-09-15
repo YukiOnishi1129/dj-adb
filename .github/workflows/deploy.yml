@@ -1,8 +1,12 @@
 name: Deploy to Shin Rental Server
 
+# 2026-09-15: dj-adb は運用停止のため定期デプロイを無効化した。
+# 検索流入が6→8月で-44%、X経由も-66%と全指標が減少し、8月以降の売上が0円のため。
+# Cloud Scheduler も同日に全7本を削除済み（バックアップ: auto-affiliate-monorepo/analytics/dj-adb-schedulers-backup-20260915.json）。
+# サイト自体は残すので、再開するときは schedule のコメントを外す。
 on:
-  schedule:
-    - cron: '30 7 * * *'  # UTC 7:30 = JST 16:30 (Daily Batch完了後、20時Xポスト前)
+  # schedule:
+  #   - cron: '30 7 * * *'  # UTC 7:30 = JST 16:30 (Daily Batch完了後、20時Xポスト前)
   workflow_dispatch:
 
 jobs:

@@ -3,9 +3,10 @@ name: Retry Deploy on Failure
 # メインデプロイ（16:30 JST）が失敗していたら、深夜に再実行する
 # JST 04:30 = UTC 19:30
 
+# 2026-09-15: dj-adb 運用停止に伴い無効化（deploy.yml と同じ理由）
 on:
-  schedule:
-    - cron: '30 19 * * *'
+  # schedule:
+  #   - cron: '30 19 * * *'
   workflow_dispatch:
 
 permissions:
